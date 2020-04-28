@@ -31,7 +31,8 @@ module.exports = configure(function (ctx) {
       iconSet: 'material-icons',
       lang: 'en-us',
       components: [
-        'QLayout', 'QHeader', 'QToolbar', 'QToolbarTitle', 'QPage', 'QPageContainer'
+        'QLayout', 'QHeader', 'QToolbar', 'QToolbarTitle', 'QPage', 'QPageContainer',
+        'QImg', 'QBtn'
       ],
       directives: [],
       plugins: []
