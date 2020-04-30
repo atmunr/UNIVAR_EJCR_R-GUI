@@ -7,6 +7,11 @@
     </q-card-section>
 
     <form @submit="submitForm">
+      <q-file color="orange" v-model="calibDataFile" label="Calibration Data">
+        <template v-slot:prepend>
+          <q-icon name="attach_file" />
+        </template>
+      </q-file>
       <q-card-actions align="right">
 	      <q-btn v-close-popup flat dense label="Save" type="submit" />
       </q-card-actions>
@@ -16,24 +21,28 @@
 
 <script lang="ts">
 import { mapActions } from 'vuex';
+import Papa from 'papaparse';
 
 export default {
   data () {
-    let newCalibrationData : Number[][];
-    return { newCalibrationData };
+    let calibDataFile : File;
+    return { calibDataFile };
   },
   methods: {
 		...mapActions('calibrationData', ['updateCalibrationData']),
     submitForm () {
-      // get new calibration data from form
-      this.newCalibrationData = [
-        [1, 1,  2.5,  3],
-        [2, 3,  3.5,  5],
-        [3, 5,  6.6,  7],
-        [4, 7,  7.5,  9],
-        [5, 9,  9.5, 10]
-      ];
-      this.updateCalibrationData(this.newCalibrationData);
+      Papa.parse(this.calibDataFile, {
+        header: false,
+        delimiter: ' ',
+        dynamicTyping: true,
+        skipEmptyLines: true,
+        complete: results => {
+          for (let row = 0; row < results.data.length; row++) {
+            results.data[row] = results.data[row].filter(x => x != null);
+          }
+          this.updateCalibrationData(results.data);
+        }
+      });
       this.$emit('formSubmitted');
     }
   }
