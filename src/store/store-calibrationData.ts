@@ -10,6 +10,18 @@ const state = {
   ]
 };
 
+const mutations = {
+	updateCalibrationData(state, calibrationData) {
+		state.replicateSets = calibrationData;
+	}
+};
+
+const actions = {
+	updateCalibrationData({ commit }, calibrationData) {
+		commit('updateCalibrationData', calibrationData);
+	}
+};
+
 const getters = {
   dataPointsAnalytes: (state) => {
     let analytes : Number[] = [];
@@ -17,7 +29,8 @@ const getters = {
       for (let col = 1; col < state.replicateSets[row].length; col++) {
         analytes.push(state.replicateSets[row][0]);
       }
-    } return analytes;
+    }
+    return analytes;
   },
   dataPointsSignals: (state) => {
     let signals : Number[] = [];
@@ -32,5 +45,7 @@ const getters = {
 export default {
 	namespaced: true,
 	state,
-	getters
+	getters,
+	actions,
+	mutations
 };

@@ -32,10 +32,10 @@ module.exports = configure(function (ctx) {
       lang: 'en-us',
       components: [
         'QLayout', 'QHeader', 'QToolbar', 'QToolbarTitle', 'QPage', 'QPageContainer',
-        'QImg', 'QBtn'
+        'QImg', 'QBtn', 'QDialog', 'QCard', 'QCardSection', 'QCardActions', 'QSpace'
       ],
-      directives: [],
-      plugins: []
+      directives: ['ClosePopup'],
+      plugins: ['Dialog']
     },
     supportIE: true,
     supportTS: {
