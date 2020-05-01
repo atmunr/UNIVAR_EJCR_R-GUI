@@ -1,6 +1,7 @@
 <template>
   <q-page class="q-pa-md">
-    <div class="row">
+
+    <div class="row q-pa-lg">
       <div class="col-3 text-center">
         <action-buttons
           @calibrationButtonPressed="showCalibrationForm = true"
@@ -15,9 +16,12 @@
       </div>
     </div>
 
+    <calibration-tables />
+
 		<q-dialog v-model="showCalibrationForm">
 		  <edit-calibration-data @formSubmitted="showCalibrationForm = false" />
 		</q-dialog>
+
   </q-page>
 </template>
 
@@ -28,12 +32,14 @@
     name: 'PageIndex',
     data () {
       let showCalibrationForm : Boolean = false;
+
       return { showCalibrationForm };
     },
     computed: mapState('calibration', ['calibrationPlotUrl']),
 	  components: {
 	    'edit-calibration-data' : require('components/CalibrationForm.vue').default,
-	    'action-buttons' : require('components/ActionButtons.vue').default
+	    'action-buttons' : require('components/ActionButtons.vue').default,
+	    'calibration-tables' : require('components/CalibrationTables.vue').default
 	  }
   }
 </script>

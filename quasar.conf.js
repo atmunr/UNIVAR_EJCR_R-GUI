@@ -33,7 +33,7 @@ module.exports = configure(function (ctx) {
       components: [
         'QLayout', 'QHeader', 'QToolbar', 'QToolbarTitle', 'QPage', 'QPageContainer',
         'QImg', 'QBtn', 'QDialog', 'QCard', 'QCardSection', 'QCardActions', 'QSpace',
-        'QIcon', 'QFile'
+        'QIcon', 'QFile', 'QTable', 'QTh', 'QTr', 'QTd'
       ],
       directives: ['ClosePopup'],
       plugins: ['Dialog']
