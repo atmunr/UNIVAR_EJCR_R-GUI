@@ -30,7 +30,7 @@
       let showCalibrationForm : Boolean = false;
       return { showCalibrationForm };
     },
-    computed: mapState('calibrationData', ['calibrationPlotUrl']),
+    computed: mapState('calibration', ['calibrationPlotUrl']),
 	  components: {
 	    'edit-calibration-data' : require('components/CalibrationForm.vue').default,
 	    'action-buttons' : require('components/ActionButtons.vue').default

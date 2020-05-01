@@ -29,7 +29,7 @@
       return { calibrationValuesFile };
     },
     methods: {
-		  ...mapActions('calibrationData', ['updateCalibrationValues']),
+		  ...mapActions('calibration', ['updateCalibrationValues']),
       submitForm () {
         Papa.parse(this.calibrationValuesFile, {
           header: false,
