@@ -5,7 +5,44 @@ const state = {
   calibrationSamples: [],
   dataPointsAnalytes: [],
   dataPointsSignals: [],
-  calibrationPlotUrl: ''
+
+  calibrationPlotUrl: '',
+
+  generalInfo: {
+    concentrationLevels: 6,
+    replicates: 3,
+    dataPoints: 18
+  },
+
+  regression: {
+    slope: {
+      value: 1.3174,
+      plusMinus: 0.030206,
+      deviation: 0.01423
+    },
+    intercept: {
+      value: 0.12365,
+      plusMinus: 0.091455,
+      deviation: 0.043124
+    }
+  },
+
+  linearityTest: {
+    noiseLevel: 0.082125,
+    expectationValue: 1.5792,
+    criticalValue: 2.6012,
+    pValue: 0.214,
+  },
+
+  figuresOfMerit: {
+    sensitivity: 1.3174,
+    gamma: 12.7654,
+    oneOverGamma: 0.078337,
+    decisionLimit: 0.14819,
+    detectionLimit: 0.29638,
+    quantitationLimit: 0.84901,
+    correlationCoefficient: 0.99907
+  }
 };
 
 const mutations = {
