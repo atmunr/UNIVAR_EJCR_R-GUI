@@ -97,7 +97,7 @@ const mutations = {
 
 const actions = {
 
-	updateCalibrationValues({ commit, dispatch }, newCalibrationSamples) {
+  async updateCalibrationValues({ commit, dispatch }, newCalibrationSamples) {
     commit('updateValuesStatus', 'LOADING');
 
     let [analytes, signals] = createDataPoints(newCalibrationSamples);
@@ -107,17 +107,20 @@ const actions = {
 		  newAnalytes: analytes,
 		  newSignals: signals
 		});
-    dispatch('getNewPlotUrl');
     dispatch('updateGeneralInfo', newCalibrationSamples);
-    dispatch('getCalibrationResults');
+
+    await dispatch('getCalibrationResults');
+
     commit('updateValuesStatus', 'AVAILABLE');
+
+    dispatch('getNewPlotUrl');
 	},
 
 	getNewPlotUrl ({ commit }) {
     axios.post('https://atmunr.ocpu.io/UNIVAR_EJCR_R-API/R/plotVectors', {
       x: state.dataPointsAnalytes, y: state.dataPointsSignals,
-      title: 'A plot', xlabel: 'Some values', ylabel: 'Some more values',
-      slope: 2, intercept: 0
+      title: 'Linear regression', xlabel: 'Concentration', ylabel: 'Response',
+      slope: state.regression.slope.value, intercept: state.regression.intercept.value
     })
     .then((response) => {
       const newUrl = 'https://cloud.opencpu.org' + response.data.split('\n')[4];
@@ -139,8 +142,8 @@ const actions = {
     });
 	},
 
-	getCalibrationResults ({ commit } ) {
-    axios.post('https://atmunr.ocpu.io/UNIVAR_EJCR_R-API/R/fitSimpleLinearRegressionOLS/json', {
+	async getCalibrationResults ({ commit } ) {
+    await axios.post('https://atmunr.ocpu.io/UNIVAR_EJCR_R-API/R/fitSimpleLinearRegressionOLS/json', {
       x: state.dataPointsAnalytes, y: state.dataPointsSignals
     })
     .then((response) => {
@@ -172,7 +175,6 @@ const actions = {
     })
     .catch((error) => { console.log(error); });
 	}
-
 };
 
 export default {
