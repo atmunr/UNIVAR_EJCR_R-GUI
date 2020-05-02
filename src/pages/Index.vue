@@ -16,7 +16,7 @@
       </div>
     </div>
 
-    <calibration-tables/>
+    <calibration-tables />
 
 		<q-dialog v-model="showCalibrationForm">
 		  <edit-calibration-data @formSubmitted="showCalibrationForm = false" />
@@ -32,7 +32,6 @@
     name: 'PageIndex',
     data () {
       let showCalibrationForm : Boolean = false;
-
       return { showCalibrationForm };
     },
     computed: mapState('calibration', ['calibrationPlotUrl']),

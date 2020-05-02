@@ -2,6 +2,7 @@ import Vue from 'vue';
 import axios from 'axios';
 
 const state = {
+
   calibrationSamples: [],
   dataPointsAnalytes: [],
   dataPointsSignals: [],
@@ -43,22 +44,27 @@ const state = {
     quantitationLimit: undefined,
     correlationCoefficient: undefined
   }
+
 };
 
 const mutations = {
+
 	updateCalibrationValues(state, payload) {
 		state.calibrationSamples = payload.newCalibrationSamples;
 		state.dataPointsAnalytes = payload.newAnalytes;
 		state.dataPointsSignals = payload.newSignals;
 	},
+
 	updatePlotUrl(state, newUrl) {
 	  state.calibrationPlotUrl = newUrl;
 	},
+
 	updateGeneralInfo (state, payload) {
     state.generalInfo.concentrationLevels = payload.concentrationLevels;
     state.generalInfo.replicates = payload.replicates;
     state.generalInfo.dataPoints = payload.dataPoints;
 	},
+
 	updateRegressionValues (state, payload) {
 	  state.regression.slope.value = payload[0][0];
 	  state.regression.slope.deviation = payload[1][0];
@@ -76,9 +82,11 @@ const mutations = {
     state.figuresOfMerit.quantitationLimit = payload[11][0];
     state.figuresOfMerit.correlationCoefficient = payload[12][0];
 	}
+
 };
 
 const actions = {
+
 	updateCalibrationValues({ commit, dispatch }, newCalibrationSamples) {
     let analytes : Number[] = [], signals : Number[] = [];
     for (let row = 0; row < newCalibrationSamples.length; row++) {
@@ -96,7 +104,8 @@ const actions = {
     dispatch('updateGeneralInfo', newCalibrationSamples);
     dispatch('getRegressionValues');
 	},
-	getNewPlotUrl({ commit }) {
+
+	getNewPlotUrl ({ commit }) {
     axios.post('https://atmunr.ocpu.io/UNIVAR_EJCR_R-API/R/plotVectors', {
       x: state.dataPointsAnalytes, y: state.dataPointsSignals,
       title: 'A plot', xlabel: 'Some values', ylabel: 'Some more values',
@@ -108,6 +117,7 @@ const actions = {
     })
     .catch((error) => { console.log(error); });
 	},
+
 	updateGeneralInfo ({ commit }, newCalibrationSamples) {
     const concentrationLevels = state.calibrationSamples.length;
 
@@ -123,6 +133,7 @@ const actions = {
       dataPoints: dataPoints
     });
 	},
+
 	getRegressionValues ({ commit } ) {
     axios.post('https://atmunr.ocpu.io/UNIVAR_EJCR_R-API/R/fitSimpleLinearRegressionOLS/json', {
       x: state.dataPointsAnalytes, y: state.dataPointsSignals
@@ -132,6 +143,7 @@ const actions = {
     })
     .catch((error) => { console.log(error); });
 	}
+
 };
 
 export default {
