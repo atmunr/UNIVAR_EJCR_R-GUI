@@ -9,39 +9,39 @@ const state = {
   calibrationPlotUrl: '',
 
   generalInfo: {
-    concentrationLevels: 6,
-    replicates: 3,
-    dataPoints: 18
+    concentrationLevels: undefined,
+    replicates: undefined,
+    dataPoints: undefined
   },
 
   regression: {
     slope: {
-      value: 1.3174,
-      plusMinus: 0.030206,
-      deviation: 0.01423
+      value: undefined,
+      plusMinus: undefined,
+      deviation: undefined
     },
     intercept: {
-      value: 0.12365,
-      plusMinus: 0.091455,
-      deviation: 0.043124
+      value: undefined,
+      plusMinus: undefined,
+      deviation: undefined
     }
   },
 
   linearityTest: {
-    noiseLevel: 0.082125,
-    expectationValue: 1.5792,
-    criticalValue: 2.6012,
-    pValue: 0.214,
+    noiseLevel: undefined,
+    expectationValue: undefined,
+    criticalValue: undefined,
+    pValue: undefined,
   },
 
   figuresOfMerit: {
-    sensitivity: 1.3174,
-    gamma: 12.7654,
-    oneOverGamma: 0.078337,
-    decisionLimit: 0.14819,
-    detectionLimit: 0.29638,
-    quantitationLimit: 0.84901,
-    correlationCoefficient: 0.99907
+    sensitivity: undefined,
+    gamma: undefined,
+    oneOverGamma: undefined,
+    decisionLimit: undefined,
+    detectionLimit: undefined,
+    quantitationLimit: undefined,
+    correlationCoefficient: undefined
   }
 };
 
@@ -53,6 +53,28 @@ const mutations = {
 	},
 	updatePlotUrl(state, newUrl) {
 	  state.calibrationPlotUrl = newUrl;
+	},
+	updateGeneralInfo (state, payload) {
+    state.generalInfo.concentrationLevels = payload.concentrationLevels;
+    state.generalInfo.replicates = payload.replicates;
+    state.generalInfo.dataPoints = payload.dataPoints;
+	},
+	updateRegressionValues (state, payload) {
+	  state.regression.slope.value = payload[0][0];
+	  state.regression.slope.deviation = payload[1][0];
+	  state.regression.slope.plusMinus = payload[2][0];
+
+	  state.regression.intercept.value = payload[3][0];
+	  state.regression.intercept.deviation = payload[4][0];
+	  state.regression.intercept.plusMinus = payload[5][0];
+
+    state.figuresOfMerit.sensitivity = Math.abs(state.regression.slope.value);
+    state.figuresOfMerit.gamma = payload[8][0];
+    state.figuresOfMerit.oneOverGamma = 1 / state.figuresOfMerit.gamma;
+    state.figuresOfMerit.decisionLimit = payload[9][0];
+    state.figuresOfMerit.detectionLimit = payload[10][0];
+    state.figuresOfMerit.quantitationLimit = payload[11][0];
+    state.figuresOfMerit.correlationCoefficient = payload[12][0];
 	}
 };
 
@@ -71,6 +93,8 @@ const actions = {
 		  newSignals: signals
 		});
     dispatch('getNewPlotUrl');
+    dispatch('updateGeneralInfo', newCalibrationSamples);
+    dispatch('getRegressionValues');
 	},
 	getNewPlotUrl({ commit }) {
     axios.post('https://atmunr.ocpu.io/UNIVAR_EJCR_R-API/R/plotVectors', {
@@ -81,6 +105,30 @@ const actions = {
     .then((response) => {
       const newUrl = 'https://cloud.opencpu.org' + response.data.split('\n')[4];
 	    commit('updatePlotUrl', newUrl);
+    })
+    .catch((error) => { console.log(error); });
+	},
+	updateGeneralInfo ({ commit }, newCalibrationSamples) {
+    const concentrationLevels = state.calibrationSamples.length;
+
+    let replicates = 0, dataPoints = 0;
+    for (let row = 0; row < newCalibrationSamples.length; row++) {
+      replicates = Math.max(replicates, state.calibrationSamples[row].length - 1);
+      dataPoints += (state.calibrationSamples[row].length - 1);
+    }
+
+    commit('updateGeneralInfo', {
+      concentrationLevels: concentrationLevels,
+      replicates: replicates,
+      dataPoints: dataPoints
+    });
+	},
+	getRegressionValues ({ commit } ) {
+    axios.post('https://atmunr.ocpu.io/UNIVAR_EJCR_R-API/R/fitSimpleLinearRegressionOLS/json', {
+      x: state.dataPointsAnalytes, y: state.dataPointsSignals
+    })
+    .then((response) => {
+      commit('updateRegressionValues', response.data);
     })
     .catch((error) => { console.log(error); });
 	}

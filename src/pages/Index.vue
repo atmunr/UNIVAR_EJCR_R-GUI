@@ -16,7 +16,7 @@
       </div>
     </div>
 
-    <calibration-tables />
+    <calibration-tables/>
 
 		<q-dialog v-model="showCalibrationForm">
 		  <edit-calibration-data @formSubmitted="showCalibrationForm = false" />
