@@ -16,7 +16,7 @@
       </div>
     </div>
 
-    <calibration-tables />
+    <calibration-tables v-if="valuesStatus === 'AVAILABLE'" />
 
 		<q-dialog v-model="showCalibrationForm">
 		  <edit-calibration-data @formSubmitted="showCalibrationForm = false" />
@@ -34,7 +34,7 @@
       let showCalibrationForm : Boolean = false;
       return { showCalibrationForm };
     },
-    computed: mapState('calibration', ['calibrationPlotUrl']),
+    computed: mapState('calibration', ['calibrationPlotUrl', 'valuesStatus']),
 	  components: {
 	    'edit-calibration-data' : require('components/CalibrationForm.vue').default,
 	    'action-buttons' : require('components/ActionButtons.vue').default,

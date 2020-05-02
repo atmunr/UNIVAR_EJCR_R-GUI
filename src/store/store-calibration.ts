@@ -11,6 +11,8 @@ const state = {
 
   calibrationPlotUrl: '',
 
+  valuesStatus: 'EMPTY',
+
   generalInfo: {
     concentrationLevels: undefined,
     replicates: undefined,
@@ -51,13 +53,17 @@ const state = {
 
 const mutations = {
 
+  updateValuesStatus (state, newStatus) {
+    state.valuesStatus = newStatus;
+  },
+
 	updateCalibrationValues(state, payload) {
 		state.calibrationSamples = payload.newCalibrationSamples;
 		state.dataPointsAnalytes = payload.newAnalytes;
 		state.dataPointsSignals = payload.newSignals;
 	},
 
-	updatePlotUrl(state, newUrl) {
+	updatePlotUrl (state, newUrl) {
 	  state.calibrationPlotUrl = newUrl;
 	},
 
@@ -92,6 +98,8 @@ const mutations = {
 const actions = {
 
 	updateCalibrationValues({ commit, dispatch }, newCalibrationSamples) {
+    commit('updateValuesStatus', 'LOADING');
+
     let [analytes, signals] = createDataPoints(newCalibrationSamples);
 
 		commit('updateCalibrationValues', {
@@ -102,6 +110,7 @@ const actions = {
     dispatch('getNewPlotUrl');
     dispatch('updateGeneralInfo', newCalibrationSamples);
     dispatch('getCalibrationResults');
+    commit('updateValuesStatus', 'AVAILABLE');
 	},
 
 	getNewPlotUrl ({ commit }) {
