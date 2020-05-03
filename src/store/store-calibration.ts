@@ -35,6 +35,10 @@ const state = {
       value: undefined,
       plusMinus: undefined,
       deviation: undefined
+    },
+    residuals: {
+      values: [],
+      deviation: undefined
     }
   },
 
@@ -95,6 +99,9 @@ const mutations = {
 	  state.regression.intercept.value = payload.intercept.value;
 	  state.regression.intercept.deviation = payload.intercept.deviation;
 	  state.regression.intercept.plusMinus = payload.intercept.plusMinus;
+
+	  state.regression.residuals.values = payload.residuals.values;
+	  state.regression.residuals.deviation = payload.residuals.deviation;
 	},
 
 	updateFiguresOfMerit (state, payload) {
@@ -128,6 +135,7 @@ const actions = {
     commit('updateValuesStatus', 'AVAILABLE');
 
     dispatch('getNewRegressionPlot');
+    dispatch('getNewResidualsPlot');
 	},
 
 	getNewRegressionPlot ({ commit, dispatch }) {
@@ -141,7 +149,31 @@ const actions = {
 	    commit('updateRegressionPlot', newUrl);
 	    dispatch('updateCurrentPlot', 'regression');
     })
-    .catch((error) => { console.log(error); });
+    .catch((error) => {
+      console.log(error);
+      const newUrl = '';
+	    commit('updateRegressionPlot', newUrl);
+	    dispatch('updateCurrentPlot', 'regression');
+    });
+	},
+
+	getNewResidualsPlot ({ commit, dispatch }) {
+    axios.post('https://atmunr.ocpu.io/UNIVAR_EJCR_R-API/R/plotVectors', {
+      x: state.dataPointsAnalytes, y: state.regression.residuals.values,
+      title: 'Residuals', xlabel: 'Concentration', ylabel: 'Residual',
+      slope: 0, intercept: 0
+    })
+    .then((response) => {
+      const newUrl = 'https://cloud.opencpu.org' + response.data.split('\n')[4];
+	    commit('updateResidualsPlot', newUrl);
+	    dispatch('updateCurrentPlot', 'residuals');
+    })
+    .catch((error) => {
+      console.log(error);
+      const newUrl = '';
+	    commit('updateResidualsPlot', newUrl);
+	    dispatch('updateCurrentPlot', 'residuals');
+    });
 	},
 
 	updateCurrentPlot ({ commit }, plot) {
@@ -176,6 +208,10 @@ const actions = {
           value: response.data[3][0],
           deviation: response.data[4][0],
           plusMinus: response.data[5][0]
+        },
+        residuals: {
+          values: response.data[6],
+          deviation: response.data[7][0]
         }
       };
 

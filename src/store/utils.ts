@@ -24,7 +24,3 @@ export function generalInfo (samples: Number[][]) {
 
   return [concentrationLevels, replicates, dataPoints];
 }
-
-export default {
-	createDataPoints, generalInfo
-};
