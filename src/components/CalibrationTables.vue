@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="row q-pa-lg justify-center">
+    <div class="row justify-center">
       <q-table
         :data="generalInfoTable.rows"
         :columns="generalInfoTable.columns"

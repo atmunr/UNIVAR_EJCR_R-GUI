@@ -9,7 +9,13 @@ const state = {
   dataPointsAnalytes: [],
   dataPointsSignals: [],
 
-  calibrationPlotUrl: '',
+  plots: {
+    current: '',
+    urls: {
+      regression: '',
+      residuals: ''
+    }
+  },
 
   valuesStatus: 'EMPTY',
 
@@ -63,8 +69,16 @@ const mutations = {
 		state.dataPointsSignals = payload.newSignals;
 	},
 
-	updatePlotUrl (state, newUrl) {
-	  state.calibrationPlotUrl = newUrl;
+	updateRegressionPlot (state, newUrl) {
+	  state.plots.urls.regression = newUrl;
+	},
+
+	updateResidualsPlot (state, newUrl) {
+	  state.plots.urls.residuals = newUrl;
+	},
+
+	updateCurrentPlot (state, plot) {
+    state.plots.current = plot;
 	},
 
 	updateGeneralInfo (state, payload) {
@@ -113,10 +127,10 @@ const actions = {
 
     commit('updateValuesStatus', 'AVAILABLE');
 
-    dispatch('getNewPlotUrl');
+    dispatch('getNewRegressionPlot');
 	},
 
-	getNewPlotUrl ({ commit }) {
+	getNewRegressionPlot ({ commit, dispatch }) {
     axios.post('https://atmunr.ocpu.io/UNIVAR_EJCR_R-API/R/plotVectors', {
       x: state.dataPointsAnalytes, y: state.dataPointsSignals,
       title: 'Linear regression', xlabel: 'Concentration', ylabel: 'Response',
@@ -124,9 +138,14 @@ const actions = {
     })
     .then((response) => {
       const newUrl = 'https://cloud.opencpu.org' + response.data.split('\n')[4];
-	    commit('updatePlotUrl', newUrl);
+	    commit('updateRegressionPlot', newUrl);
+	    dispatch('updateCurrentPlot', 'regression');
     })
     .catch((error) => { console.log(error); });
+	},
+
+	updateCurrentPlot ({ commit }, plot) {
+	  commit('updateCurrentPlot', plot);
 	},
 
 	updateGeneralInfo ({ commit }, newCalibrationSamples) {
