@@ -6,7 +6,7 @@
       <q-btn flat round dense icon="close" v-close-popup />
     </q-card-section>
 
-    <form @submit="submitForm">
+    <form @submit.prevent="submitForm">
       <q-file color="orange" v-model="calibrationValuesFile" label="Calibration Data">
         <template v-slot:prepend>
           <q-icon name="attach_file" />
