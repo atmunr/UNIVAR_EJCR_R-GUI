@@ -46,7 +46,8 @@ const state = {
     noiseLevel: undefined,
     expectationValue: undefined,
     criticalValue: undefined,
-    pValue: undefined,
+    ccdf: undefined,
+    pass: undefined
   },
 
   figuresOfMerit: {
@@ -112,6 +113,14 @@ const mutations = {
     state.figuresOfMerit.detectionLimit = payload.detectionLimit;
     state.figuresOfMerit.quantitationLimit = payload.quantitationLimit;
     state.figuresOfMerit.correlationCoefficient = payload.correlationCoefficient;
+	},
+
+	updateLinearityTestValues (state, payload) {
+	  state.linearityTest.noiseLevel = payload.noiseLevel;
+	  state.linearityTest.expectationValue = payload.expectationValue;
+	  state.linearityTest.criticalValue= payload.criticalValue;
+	  state.linearityTest.ccdf = payload.ccdf;
+	  state.linearityTest.pass = payload.pass;
 	}
 
 };
@@ -131,6 +140,8 @@ const actions = {
     dispatch('updateGeneralInfo', newCalibrationSamples);
 
     await dispatch('getCalibrationResults');
+
+    dispatch('getLinearityTestResults');
 
     commit('updateValuesStatus', 'AVAILABLE');
 
@@ -227,6 +238,29 @@ const actions = {
 
       commit('updateRegressionValues', newRegressionValues);
       commit('updateFiguresOfMerit', newFiguresOfMerit);
+    })
+    .catch((error) => { console.log(error); });
+	},
+
+	getLinearityTestResults ({ commit }) {
+	  // Get rid of analyte concentrations - keep only replicates.
+	  const replicateSets = state.calibrationSamples.map((sample) => {
+      return sample.slice(1, sample.length);
+	  });
+
+    axios.post('https://atmunr.ocpu.io/UNIVAR_EJCR_R-API/R/runFTest/json', {
+      replicate_sets: replicateSets,
+      deviation_residuals: state.regression.residuals.deviation
+    })
+    .then((response) => {
+      const newLinearityTestValues = {
+        noiseLevel: response.data[0][0],
+        expectationValue: response.data[1][0],
+        criticalValue: response.data[2][0],
+        ccdf: response.data[3][0],
+        pass: response.data[4][0],
+      };
+      commit('updateLinearityTestValues', newLinearityTestValues);
     })
     .catch((error) => { console.log(error); });
 	}

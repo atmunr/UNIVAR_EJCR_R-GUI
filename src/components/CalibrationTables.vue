@@ -83,13 +83,13 @@
             { align: 'center', label: 'Estimated noise level', field: 'noiseLevel' },
             { align: 'center', label: 'Expectation value', field: 'expectationValue' },
             { align: 'center', label: 'Critical value', field: 'criticalValue' },
-            { align: 'center', label: 'p-value', field: 'pValue' }
+            { align: 'center', label: 'Pass?', field: 'pass' }
           ],
           rows: [{
             noiseLevel: state.linearityTest.noiseLevel,
             expectationValue: state.linearityTest.expectationValue,
             criticalValue: state.linearityTest.criticalValue,
-            pValue: state.linearityTest.pValue
+            pass: state.linearityTest.pass ? "Yes" : "No"
           }]
         }
       },
