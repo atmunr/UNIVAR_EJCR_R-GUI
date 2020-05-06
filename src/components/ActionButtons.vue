@@ -1,39 +1,49 @@
 <template>
   <div>
-    <q-card class="q-mt-sm">
-      <q-card-section class="bg-primary text-black">
-        <div class="text-h6">Submit data</div>
-      </q-card-section>
-      <q-card-section>
-        <q-btn
-          class="full-width"
-          color="primary" text-color="black"
-          label="Calibration" no-caps
-          @click="$emit('calibrationButtonPressed')"
-        />
-      </q-card-section>
-      <q-card-section>
-        <q-btn
-          class="full-width"
-          color="primary" text-color="black"
-          label="EJCR"
-          @click=""
-        />
-      </q-card-section>
-      <q-card-section>
-        <q-btn
-          class="full-width"
-          color="primary" text-color="black"
-          label="RMSE"
-          @click=""
-        />
-      </q-card-section>
+    <div class="q-mt-lg text-h6">
+      <q-btn
+        class="full-width"
+        color="primary" text-color="black"
+        label="Submit Data" no-caps
+        @click="$emit('calibrationButtonPressed')"
+      />
+    </div>
 
+    <q-card class="q-mt-lg">
+      <q-card-section class="bg-primary text-black">
+        <div class="text-h6">Change shown values</div>
+      </q-card-section>
+      <q-card-section class="text-black">
+        <div class="row justify-between">
+          <div class="column">
+            <q-btn
+              color="primary" text-color="black"
+              label="Calibration" no-caps
+            />
+            <q-btn
+              class="q-mt-md"
+              color="primary" text-color="black"
+              label="Prediction" no-caps
+            />
+          </div>
+          <div class="column">
+            <q-btn
+              color="primary" text-color="black"
+              label="EJCR" no-caps
+            />
+            <q-btn
+              class="q-mt-md"
+              color="primary" text-color="black"
+              label="RMSE" no-caps
+            />
+          </div>
+        </div>
+      </q-card-section>
     </q-card>
 
     <q-card class="q-mt-lg">
       <q-card-section class="bg-primary text-black">
-        <div class="text-h6">Show plot</div>
+        <div class="text-h6">Change plot</div>
       </q-card-section>
       <q-card-section>
         <q-btn
