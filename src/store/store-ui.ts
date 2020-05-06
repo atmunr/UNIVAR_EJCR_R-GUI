@@ -1,6 +1,13 @@
 import Vue from 'vue';
 import axios from 'axios';
 
+const defaultPlots = {
+  'calibration': 'regression',
+  'prediction': undefined,
+  'ejcr': undefined,
+  'rmse': undefined
+}
+
 const state = {
 
   plots: {
@@ -11,27 +18,34 @@ const state = {
     }
   },
 
-  valuesStatus: 'EMPTY',
+  shownValues: '',
+
+  valuesStatus: {
+    calibration: 'EMPTY',
+    prediction: 'EMPTY',
+    ejcr: 'EMPTY',
+    rmse: 'EMPTY'
+  }
 
 };
 
 const mutations = {
 
-  updateValuesStatus (state, newStatus) {
-    state.valuesStatus = newStatus;
+  updateValuesStatus (state, payload) {
+    state.valuesStatus[payload.name] = payload.newStatus;
   },
 
-	updateRegressionPlot (state, newUrl) {
-	  state.plots.urls.regression = newUrl;
-	},
-
-	updateResidualsPlot (state, newUrl) {
-	  state.plots.urls.residuals = newUrl;
+	updatePlotUrl (state, payload) {
+	  state.plots.urls[payload.name] = payload.newUrl;
 	},
 
 	updateCurrentPlot (state, plot) {
     state.plots.current = plot;
 	},
+
+	updateShownValues (state, newShownValues) {
+	  state.shownValues = newShownValues;
+	}
 
 };
 
@@ -45,18 +59,27 @@ const actions = {
     })
     .then((response) => {
       const newUrl = 'https://cloud.opencpu.org' + response.data.split('\n')[4];
-	    commit(payload.commit, newUrl);
+	    commit('updatePlotUrl', {
+	      name: payload.plotName, newUrl: newUrl
+	    });
 	    dispatch('updateCurrentPlot', payload.plotName);
     })
     .catch((error) => {
       console.log(error);
-	    commit(payload.commit, '');
+	    commit('updatePlotUrl', {
+	      name: payload.plotName, newUrl: ''
+	    });
 	    dispatch('updateCurrentPlot', payload.plotName);
     });
 	},
 
+	updateShownValues ({ commit, dispatch }, shownValues) {
+	  commit('updateShownValues', shownValues);
+	  commit('updateCurrentPlot', defaultPlots[shownValues]);
+	},
+
 	updateCurrentPlot ({ commit }, plot) {
-	  commit('updateCurrentPlot', plot);
+    commit('updateCurrentPlot', plot);
 	}
 
 };

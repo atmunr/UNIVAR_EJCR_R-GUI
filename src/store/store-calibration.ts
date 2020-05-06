@@ -103,10 +103,13 @@ const mutations = {
 const actions = {
 
   async updateCalibrationValues({ commit, dispatch }, newCalibrationSamples) {
-    commit('ui/updateValuesStatus', 'LOADING', { root: true });
+
+    commit('ui/updateValuesStatus', {
+      name: 'calibration', newStatus: 'LOADING'
+    }, { root: true });
+    dispatch('ui/updateShownValues', 'calibration', { root: true });
 
     let [analytes, signals] = createDataPoints(newCalibrationSamples);
-
 		commit('updateCalibrationValues', {
 		  newCalibrationSamples: newCalibrationSamples,
 		  newAnalytes: analytes,
@@ -115,17 +118,18 @@ const actions = {
     dispatch('updateGeneralInfo', newCalibrationSamples);
 
     await dispatch('getCalibrationResults');
-
     dispatch('getLinearityTestResults');
 
-    commit('ui/updateValuesStatus', 'AVAILABLE', { root: true });
+    commit('ui/updateValuesStatus', {
+      name: 'calibration', newStatus: 'AVAILABLE'
+    }, { root: true });
 
     // Get new linear regression plot
     dispatch('ui/getNewPlot', {
       x: state.dataPointsAnalytes, y: state.dataPointsSignals,
       title: 'Linear regression', xlabel: 'Concentration', ylabel: 'Response',
       slope: state.regression.slope.value, intercept: state.regression.intercept.value,
-      commit: 'updateRegressionPlot', plotName: 'regression'
+      plotName: 'regression'
     }, { root: true });
 
     // Get new plot of residuals
@@ -133,7 +137,7 @@ const actions = {
       x: state.dataPointsAnalytes, y: state.regression.residuals.values,
       title: 'Residuals', xlabel: 'Concentration', ylabel: 'Residual',
       slope: 0, intercept: 0,
-      commit: 'updateResidualsPlot', plotName: 'residuals'
+      plotName: 'residuals'
     }, { root: true });
 	},
 

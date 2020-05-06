@@ -19,22 +19,26 @@
             <q-btn
               color="primary" text-color="black"
               label="Calibration" no-caps
+              @click="updateShownValues('calibration')"
             />
             <q-btn
               class="q-mt-md"
               color="primary" text-color="black"
               label="Prediction" no-caps
+              @click="updateShownValues('prediction')"
             />
           </div>
           <div class="column">
             <q-btn
               color="primary" text-color="black"
               label="EJCR" no-caps
+              @click="updateShownValues('ejcr')"
             />
             <q-btn
               class="q-mt-md"
               color="primary" text-color="black"
               label="RMSE" no-caps
+              @click="updateShownValues('rmse')"
             />
           </div>
         </div>
@@ -70,7 +74,7 @@
 
   export default {
     methods: {
-      ...mapActions('ui', ['updateCurrentPlot'])
+      ...mapActions('ui', ['updateCurrentPlot', 'updateShownValues'])
     }
   }
 </script>

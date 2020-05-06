@@ -30,7 +30,10 @@
     </div>
 
     <div class="q-pa-lg ">
-      <calibration-tables v-if="valuesStatus === 'AVAILABLE'" />
+      <calibration-tables
+        v-if="shownValues === 'calibration' &&
+        valuesStatus.calibration === 'AVAILABLE'"
+      />
     </div>
 
 		<q-dialog v-model="showCalibrationForm">
@@ -50,7 +53,7 @@
 
       return { showCalibrationForm };
     },
-    computed: mapState('ui', ['plots', 'valuesStatus']),
+    computed: mapState('ui', ['plots', 'shownValues', 'valuesStatus']),
 	  components: {
 	    'edit-calibration-data' : require('components/CalibrationForm.vue').default,
 	    'action-buttons' : require('components/ActionButtons.vue').default,
