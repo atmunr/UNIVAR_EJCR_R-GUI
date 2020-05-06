@@ -70,7 +70,7 @@
 
   export default {
     methods: {
-      ...mapActions('calibration', ['updateCurrentPlot'])
+      ...mapActions('ui', ['updateCurrentPlot'])
     }
   }
 </script>

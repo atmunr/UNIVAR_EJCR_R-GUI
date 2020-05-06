@@ -50,7 +50,7 @@
 
       return { showCalibrationForm };
     },
-    computed: mapState('calibration', ['plots', 'valuesStatus']),
+    computed: mapState('ui', ['plots', 'valuesStatus']),
 	  components: {
 	    'edit-calibration-data' : require('components/CalibrationForm.vue').default,
 	    'action-buttons' : require('components/ActionButtons.vue').default,

@@ -9,16 +9,6 @@ const state = {
   dataPointsAnalytes: [],
   dataPointsSignals: [],
 
-  plots: {
-    current: '',
-    urls: {
-      regression: '',
-      residuals: ''
-    }
-  },
-
-  valuesStatus: 'EMPTY',
-
   generalInfo: {
     concentrationLevels: undefined,
     replicates: undefined,
@@ -64,27 +54,12 @@ const state = {
 
 const mutations = {
 
-  updateValuesStatus (state, newStatus) {
-    state.valuesStatus = newStatus;
-  },
-
 	updateCalibrationValues(state, payload) {
 		state.calibrationSamples = payload.newCalibrationSamples;
 		state.dataPointsAnalytes = payload.newAnalytes;
 		state.dataPointsSignals = payload.newSignals;
 	},
 
-	updateRegressionPlot (state, newUrl) {
-	  state.plots.urls.regression = newUrl;
-	},
-
-	updateResidualsPlot (state, newUrl) {
-	  state.plots.urls.residuals = newUrl;
-	},
-
-	updateCurrentPlot (state, plot) {
-    state.plots.current = plot;
-	},
 
 	updateGeneralInfo (state, payload) {
     state.generalInfo.concentrationLevels = payload.concentrationLevels;
@@ -128,7 +103,7 @@ const mutations = {
 const actions = {
 
   async updateCalibrationValues({ commit, dispatch }, newCalibrationSamples) {
-    commit('updateValuesStatus', 'LOADING');
+    commit('ui/updateValuesStatus', 'LOADING', { root: true });
 
     let [analytes, signals] = createDataPoints(newCalibrationSamples);
 
@@ -143,51 +118,25 @@ const actions = {
 
     dispatch('getLinearityTestResults');
 
-    commit('updateValuesStatus', 'AVAILABLE');
+    commit('ui/updateValuesStatus', 'AVAILABLE', { root: true });
 
-    dispatch('getNewRegressionPlot');
-    dispatch('getNewResidualsPlot');
-	},
-
-	getNewPlot ({ commit, dispatch }, payload) {
-    axios.post('https://atmunr.ocpu.io/UNIVAR_EJCR_R-API/R/plotVectors', {
-      x: payload.x, y: payload.y,
-      title: payload.title, xlabel: payload.xlabel, ylabel: payload.ylabel,
-      slope: payload.slope, intercept: payload.intercept
-    })
-    .then((response) => {
-      const newUrl = 'https://cloud.opencpu.org' + response.data.split('\n')[4];
-	    commit(payload.commit, newUrl);
-	    dispatch('updateCurrentPlot', payload.plotName);
-    })
-    .catch((error) => {
-      console.log(error);
-	    commit(payload.commit, '');
-	    dispatch('updateCurrentPlot', payload.plotName);
-    });
-	},
-
-	getNewRegressionPlot ({ commit, dispatch }) {
-    dispatch('getNewPlot', {
+    // Get new linear regression plot
+    dispatch('ui/getNewPlot', {
       x: state.dataPointsAnalytes, y: state.dataPointsSignals,
       title: 'Linear regression', xlabel: 'Concentration', ylabel: 'Response',
       slope: state.regression.slope.value, intercept: state.regression.intercept.value,
       commit: 'updateRegressionPlot', plotName: 'regression'
-    });
-	},
+    }, { root: true });
 
-	getNewResidualsPlot ({ commit, dispatch }) {
-    dispatch('getNewPlot', {
+    // Get new plot of residuals
+    dispatch('ui/getNewPlot', {
       x: state.dataPointsAnalytes, y: state.regression.residuals.values,
       title: 'Residuals', xlabel: 'Concentration', ylabel: 'Residual',
       slope: 0, intercept: 0,
       commit: 'updateResidualsPlot', plotName: 'residuals'
-    });
+    }, { root: true });
 	},
 
-	updateCurrentPlot ({ commit }, plot) {
-	  commit('updateCurrentPlot', plot);
-	},
 
 	updateGeneralInfo ({ commit }, newCalibrationSamples) {
 	  let [newConcentrationLevels,
