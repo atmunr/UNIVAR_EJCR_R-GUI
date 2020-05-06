@@ -149,41 +149,39 @@ const actions = {
     dispatch('getNewResidualsPlot');
 	},
 
-	getNewRegressionPlot ({ commit, dispatch }) {
+	getNewPlot ({ commit, dispatch }, payload) {
     axios.post('https://atmunr.ocpu.io/UNIVAR_EJCR_R-API/R/plotVectors', {
-      x: state.dataPointsAnalytes, y: state.dataPointsSignals,
-      title: 'Linear regression', xlabel: 'Concentration', ylabel: 'Response',
-      slope: state.regression.slope.value, intercept: state.regression.intercept.value
+      x: payload.x, y: payload.y,
+      title: payload.title, xlabel: payload.xlabel, ylabel: payload.ylabel,
+      slope: payload.slope, intercept: payload.intercept
     })
     .then((response) => {
       const newUrl = 'https://cloud.opencpu.org' + response.data.split('\n')[4];
-	    commit('updateRegressionPlot', newUrl);
-	    dispatch('updateCurrentPlot', 'regression');
+	    commit(payload.commit, newUrl);
+	    dispatch('updateCurrentPlot', payload.plotName);
     })
     .catch((error) => {
       console.log(error);
-      const newUrl = '';
-	    commit('updateRegressionPlot', newUrl);
-	    dispatch('updateCurrentPlot', 'regression');
+	    commit(payload.commit, '');
+	    dispatch('updateCurrentPlot', payload.plotName);
+    });
+	},
+
+	getNewRegressionPlot ({ commit, dispatch }) {
+    dispatch('getNewPlot', {
+      x: state.dataPointsAnalytes, y: state.dataPointsSignals,
+      title: 'Linear regression', xlabel: 'Concentration', ylabel: 'Response',
+      slope: state.regression.slope.value, intercept: state.regression.intercept.value,
+      commit: 'updateRegressionPlot', plotName: 'regression'
     });
 	},
 
 	getNewResidualsPlot ({ commit, dispatch }) {
-    axios.post('https://atmunr.ocpu.io/UNIVAR_EJCR_R-API/R/plotVectors', {
+    dispatch('getNewPlot', {
       x: state.dataPointsAnalytes, y: state.regression.residuals.values,
       title: 'Residuals', xlabel: 'Concentration', ylabel: 'Residual',
-      slope: 0, intercept: 0
-    })
-    .then((response) => {
-      const newUrl = 'https://cloud.opencpu.org' + response.data.split('\n')[4];
-	    commit('updateResidualsPlot', newUrl);
-	    dispatch('updateCurrentPlot', 'residuals');
-    })
-    .catch((error) => {
-      console.log(error);
-      const newUrl = '';
-	    commit('updateResidualsPlot', newUrl);
-	    dispatch('updateCurrentPlot', 'residuals');
+      slope: 0, intercept: 0,
+      commit: 'updateResidualsPlot', plotName: 'residuals'
     });
 	},
 
