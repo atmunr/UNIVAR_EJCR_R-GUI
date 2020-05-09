@@ -32,11 +32,11 @@
     <div class="q-pa-lg ">
       <calibration-tables
         v-if="shownValues === 'calibration' &&
-        valuesStatus.calibration === 'AVAILABLE'"
+        valuesStatus['calibration'] === 'AVAILABLE'"
       />
       <prediction-tables
         v-if="shownValues === 'prediction' &&
-        valuesStatus.prediction === 'AVAILABLE'"
+        valuesStatus['prediction'] === 'AVAILABLE'"
       />
     </div>
 

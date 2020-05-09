@@ -5,9 +5,12 @@ import { createDataPoints, generalInfo } from './utils';
 
 const state = {
 
-  calibrationSamples: [],
-  dataPointsAnalytes: [],
-  dataPointsSignals: [],
+  samples: [],
+
+  dataPoints: {
+    analytes: [],
+    signals: []
+  },
 
   generalInfo: {
     concentrationLevels: undefined,
@@ -55,9 +58,9 @@ const state = {
 const mutations = {
 
 	updateCalibrationValues(state, payload) {
-		state.calibrationSamples = payload.newCalibrationSamples;
-		state.dataPointsAnalytes = payload.newAnalytes;
-		state.dataPointsSignals = payload.newSignals;
+		state.samples = payload.newCalibrationSamples;
+		state.dataPoints.analytes = payload.newAnalytes;
+		state.dataPoints.signals = payload.newSignals;
 	},
 
 
@@ -126,7 +129,7 @@ const actions = {
 
     // Get new linear regression plot
     dispatch('ui/getNewPlot', {
-      x: state.dataPointsAnalytes, y: state.dataPointsSignals,
+      x: state.dataPoints.analytes, y: state.dataPoints.signals,
       title: 'Linear regression', xlabel: 'Concentration', ylabel: 'Response',
       slope: state.regression.slope.value, intercept: state.regression.intercept.value,
       plotName: 'regression'
@@ -134,7 +137,7 @@ const actions = {
 
     // Get new plot of residuals
     dispatch('ui/getNewPlot', {
-      x: state.dataPointsAnalytes, y: state.regression.residuals.values,
+      x: state.dataPoints.analytes, y: state.regression.residuals.values,
       title: 'Residuals', xlabel: 'Concentration', ylabel: 'Residual',
       slope: 0, intercept: 0,
       plotName: 'residuals'
@@ -157,7 +160,7 @@ const actions = {
 
 	async getCalibrationResults ({ commit } ) {
     await axios.post('https://atmunr.ocpu.io/UNIVAR_EJCR_R-API/R/fitSimpleLinearRegressionOLS/json', {
-      x: state.dataPointsAnalytes, y: state.dataPointsSignals
+      x: state.dataPoints.analytes, y: state.dataPoints.signals
     })
     .then((response) => {
       const newRegressionValues = {
@@ -195,7 +198,7 @@ const actions = {
 
 	getLinearityTestResults ({ commit }) {
 	  // Get rid of analyte concentrations - keep only replicates.
-	  const replicateSets = state.calibrationSamples.map((sample) => {
+	  const replicateSets = state.samples.map((sample) => {
       return sample.slice(1, sample.length);
 	  });
 

@@ -20,7 +20,7 @@
               color="primary" text-color="black"
               label="Calibration" no-caps
               @click="updateShownValues('calibration')"
-              :disable="valuesStatus.calibration === 'EMPTY'"
+              :disable="valuesStatus['calibration'] === 'EMPTY'"
               :glossy="shownValues === 'calibration'"
             />
             <q-btn
@@ -28,7 +28,7 @@
               color="primary" text-color="black"
               label="Prediction" no-caps
               @click="updateShownValues('prediction')"
-              :disable="valuesStatus.prediction === 'EMPTY'"
+              :disable="valuesStatus['prediction'] === 'EMPTY'"
               :glossy="shownValues === 'prediction'"
             />
           </div>
@@ -37,7 +37,7 @@
               color="primary" text-color="black"
               label="EJCR" no-caps
               @click="updateShownValues('ejcr')"
-              :disable="valuesStatus.ejcr === 'EMPTY'"
+              :disable="valuesStatus['ejcr'] === 'EMPTY'"
               :glossy="shownValues === 'ejcr'"
             />
             <q-btn
@@ -45,7 +45,7 @@
               color="primary" text-color="black"
               label="RMSE" no-caps
               @click="updateShownValues('rmse')"
-              :disable="valuesStatus.rmse === 'EMPTY'"
+              :disable="valuesStatus['rmse'] === 'EMPTY'"
               :glossy="shownValues === 'rmse'"
             />
           </div>
