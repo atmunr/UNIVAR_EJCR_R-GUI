@@ -20,12 +20,16 @@
               color="primary" text-color="black"
               label="Calibration" no-caps
               @click="updateShownValues('calibration')"
+              :disable="valuesStatus.calibration === 'EMPTY'"
+              :glossy="shownValues === 'calibration'"
             />
             <q-btn
               class="q-mt-md"
               color="primary" text-color="black"
               label="Prediction" no-caps
               @click="updateShownValues('prediction')"
+              :disable="valuesStatus.prediction === 'EMPTY'"
+              :glossy="shownValues === 'prediction'"
             />
           </div>
           <div class="column">
@@ -33,12 +37,16 @@
               color="primary" text-color="black"
               label="EJCR" no-caps
               @click="updateShownValues('ejcr')"
+              :disable="valuesStatus.ejcr === 'EMPTY'"
+              :glossy="shownValues === 'ejcr'"
             />
             <q-btn
               class="q-mt-md"
               color="primary" text-color="black"
               label="RMSE" no-caps
               @click="updateShownValues('rmse')"
+              :disable="valuesStatus.rmse === 'EMPTY'"
+              :glossy="shownValues === 'rmse'"
             />
           </div>
         </div>
@@ -55,6 +63,8 @@
           color="primary" text-color="black"
           label="Linear regression" no-caps
           @click="updateCurrentPlot('regression')"
+          :disable="plots.urls['regression'] === ''"
+          :glossy="plots.current === 'regression' && plots.urls['regression'] !== ''"
         />
       </q-card-section>
       <q-card-section>
@@ -63,6 +73,8 @@
           color="primary" text-color="black"
           label="Residuals" no-caps
           @click="updateCurrentPlot('residuals')"
+          :disable="plots.urls['residuals'] === ''"
+          :glossy="plots.current === 'residuals' && plots.urls['residuals'] !== ''"
         />
       </q-card-section>
     </q-card>
@@ -70,9 +82,10 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex';
+  import { mapState, mapActions } from 'vuex';
 
   export default {
+    computed: mapState('ui', ['plots', 'shownValues', 'valuesStatus']),
     methods: {
       ...mapActions('ui', ['updateCurrentPlot', 'updateShownValues'])
     }
