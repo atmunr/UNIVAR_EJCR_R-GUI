@@ -18,11 +18,11 @@ const state = {
     }
   },
 
-  shownValues: '',
+  shownValues: 'prediction',
 
   valuesStatus: {
     calibration: 'EMPTY',
-    prediction: 'EMPTY',
+    prediction: 'AVAILABLE',
     ejcr: 'EMPTY',
     rmse: 'EMPTY'
   }
@@ -75,7 +75,9 @@ const actions = {
 
 	updateShownValues ({ commit, dispatch }, shownValues) {
 	  commit('updateShownValues', shownValues);
-	  commit('updateCurrentPlot', defaultPlots[shownValues]);
+    if (defaultPlots[shownValues] !== undefined) {
+	    commit('updateCurrentPlot', defaultPlots[shownValues]);
+    }
 	},
 
 	updateCurrentPlot ({ commit }, plot) {

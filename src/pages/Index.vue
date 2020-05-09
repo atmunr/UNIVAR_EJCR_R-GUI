@@ -34,6 +34,10 @@
         v-if="shownValues === 'calibration' &&
         valuesStatus.calibration === 'AVAILABLE'"
       />
+      <prediction-tables
+        v-if="shownValues === 'prediction' &&
+        valuesStatus.prediction === 'AVAILABLE'"
+      />
     </div>
 
 		<q-dialog v-model="showCalibrationForm">
@@ -57,7 +61,8 @@
 	  components: {
 	    'edit-calibration-data' : require('components/CalibrationForm.vue').default,
 	    'action-buttons' : require('components/ActionButtons.vue').default,
-	    'calibration-tables' : require('components/CalibrationTables.vue').default
+	    'calibration-tables' : require('components/CalibrationTables.vue').default,
+	    'prediction-tables' : require('components/PredictionTables.vue').default
 	  }
   }
 </script>

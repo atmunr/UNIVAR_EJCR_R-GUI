@@ -2,6 +2,7 @@ import { store } from 'quasar/wrappers';
 import Vuex from 'vuex';
 
 import calibration from './store-calibration';
+import prediction from './store-prediction';
 import ui from './store-ui';
 
 export default store(function ({ Vue }) {
@@ -10,6 +11,7 @@ export default store(function ({ Vue }) {
   const Store = new Vuex.Store({
     modules: {
       calibration,
+      prediction,
       ui
     },
 
