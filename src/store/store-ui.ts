@@ -10,6 +10,11 @@ const defaultPlots = {
 
 const state = {
 
+  fileNames: {
+    calibration: undefined,
+    prediction: undefined,
+  },
+
   plots: {
     current: '',
     urls: {
@@ -45,7 +50,11 @@ const mutations = {
 
 	updateShownValues (state, newShownValues) {
 	  state.shownValues = newShownValues;
-	}
+	},
+
+  updateFileName (state, payload) {
+    state.fileNames[payload.target] = payload.newFileName;
+  }
 
 };
 

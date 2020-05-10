@@ -6,6 +6,7 @@ import { createDataPoints, generalInfo } from './utils';
 const state = {
 
   samples: [],
+  fileName: undefined,
 
   dataPoints: {
     analytes: [],
@@ -68,6 +69,9 @@ const mutations = {
     state.generalInfo.concentrationLevels = payload.concentrationLevels;
     state.generalInfo.replicates = payload.replicates;
     state.generalInfo.dataPoints = payload.dataPoints;
+
+    // TEST
+    state.fileName = 'calibration_data.txt';
 	},
 
 	updateRegressionValues (state, payload) {
@@ -105,7 +109,10 @@ const mutations = {
 
 const actions = {
 
-  async updateCalibrationValues({ commit, dispatch }, newCalibrationSamples) {
+  async updateCalibrationValues ({ commit, dispatch }, payload) {
+
+    const newCalibrationSamples : Number[][] = payload.newCalibrationSamples;
+    const newFileName : String = payload.newFileName;
 
     commit('ui/updateValuesStatus', {
       name: 'calibration', newStatus: 'LOADING'
@@ -125,6 +132,10 @@ const actions = {
 
     commit('ui/updateValuesStatus', {
       name: 'calibration', newStatus: 'AVAILABLE'
+    }, { root: true });
+
+    commit('ui/updateFileName', {
+      target: 'calibration', newFileName: newFileName
     }, { root: true });
 
     // Get new linear regression plot

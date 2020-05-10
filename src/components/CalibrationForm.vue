@@ -7,11 +7,27 @@
     </q-card-section>
 
     <form @submit.prevent="submitForm">
-      <q-file color="orange" v-model="calibrationValuesFile" label="Calibration Data">
+
+      <q-file
+        :label-color="fileNames['calibration'] ? 'primary' : ''"
+        v-model="calibrationValuesFile"
+        :label="fileNames['calibration'] ? fileNames['calibration'] : 'Calibration Data'"
+      >
         <template v-slot:prepend>
-          <q-icon name="attach_file" />
+          <q-icon name="attachment" :color="fileNames['calibration'] ? 'primary' : ''" />
         </template>
       </q-file>
+
+      <q-file v-if="valuesStatus['calibration'] === 'AVAILABLE'"
+        :label-color="fileNames['prediction'] ? 'primary' : ''"
+        v-model="predictionValuesFile"
+        :label="fileNames['prediction'] ? fileNames['prediction'] : 'Test Data'"
+      >
+        <template v-slot:prepend>
+          <q-icon name="attachment" :color="fileNames['prediction'] ? 'primary' : ''" />
+        </template>
+      </q-file>
+
       <q-card-actions align="right">
 	      <q-btn v-close-popup flat dense label="Save" type="submit" />
       </q-card-actions>
@@ -20,14 +36,15 @@
 </template>
 
 <script lang="ts">
-  import { mapActions } from 'vuex';
+  import { mapState, mapActions } from 'vuex';
   import Papa from 'papaparse';
 
   export default {
     data () {
-      let calibrationValuesFile : File;
-      return { calibrationValuesFile };
+      let calibrationValuesFile : File, predictionValuesFile : File;
+      return { calibrationValuesFile, predictionValuesFile };
     },
+    computed: mapState('ui', ['fileNames', 'valuesStatus']),
     methods: {
 		  ...mapActions('calibration', ['updateCalibrationValues']),
       submitForm () {
@@ -40,7 +57,10 @@
             for (let row = 0; row < results.data.length; row++) {
               results.data[row] = results.data[row].filter(x => x != null);
             }
-            this.updateCalibrationValues(results.data);
+            this.updateCalibrationValues({
+              newCalibrationSamples: results.data,
+              newFileName: this.calibrationValuesFile.name
+            });
           }
         });
         this.$emit('formSubmitted');
@@ -48,3 +68,7 @@
     }
   }
 </script>
+
+<style lang="scss">
+
+</style>
