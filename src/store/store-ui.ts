@@ -18,11 +18,11 @@ const state = {
     }
   },
 
-  shownValues: 'prediction',
+  shownValues: undefined,
 
   valuesStatus: {
     calibration: 'EMPTY',
-    prediction: 'AVAILABLE',
+    prediction: 'EMPTY',
     ejcr: 'EMPTY',
     rmse: 'EMPTY'
   }
