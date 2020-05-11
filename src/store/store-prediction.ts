@@ -21,12 +21,18 @@ const mutations = {
     state.analytes = newAnalytes;
   },
 
+  updatePredictionUncertainty (state, payload) {
+    state.plusMinus = payload.plusMinus;
+    state.deviation = payload.deviation;
+    state.relDeviation = payload.relDeviation;
+  },
+
   clearPredictionValues (state) {
     state.replicateSets = null;
     state.analytes = null;
-    //state.plusMinus = null;
-    //state.deviation = null;
-    //state.relDeviation = null;
+    state.plusMinus = null;
+    state.deviation = null;
+    state.relDeviation = null;
   }
 
 };
@@ -44,28 +50,29 @@ const actions = {
   },
 
   async updatePredictionValues ({ commit, dispatch }, payload) {
-    const replicateSets : Number[][] = payload.newReplicateSets;
-    const fileName : String = payload.newFileName;
-
     commit('ui/updateValuesStatus', {
       name: 'prediction', newStatus: 'LOADING'
     }, { root: true });
-    dispatch('ui/updateShownValues', 'prediction', { root: true });
 
+    const replicateSets : Number[][] = payload.newReplicateSets;
     commit('updateReplicateSets', replicateSets);
 
+    const fileName : String = payload.newFileName;
     commit('ui/updateFileName', {
       target: 'prediction', newFileName: fileName
     }, { root: true });
 
-    await dispatch('getPredictionResults');
+    await dispatch('getPredictedAnalytes');
+    await dispatch('getPredictionUncertainty');
 
     commit('ui/updateValuesStatus', {
       name: 'prediction', newStatus: 'AVAILABLE'
     }, { root: true });
+
+    dispatch('ui/updateShownValues', 'prediction', { root: true });
   },
 
-  async getPredictionResults ({ commit, rootState }) {
+  async getPredictedAnalytes ({ commit, rootState }) {
     await axios.post('https://atmunr.ocpu.io/UNIVAR_EJCR_R-API/R/predictAnalyteConcentrations/json', {
       replicate_sets: state.replicateSets,
       slope: rootState.calibration.regression.slope.value,
@@ -73,6 +80,29 @@ const actions = {
     })
     .then((response) => {
       commit('updatePredictedAnalytes', response.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  },
+
+  async getPredictionUncertainty ({ commit, rootState, rootGetters }) {
+    const [calibAnalytes, calibSignals] = rootGetters['calibration/getCalibrationSamples'];
+
+    await axios.post('https://atmunr.ocpu.io/UNIVAR_EJCR_R-API/R/estimateUncertaintyOfPredictedValues/json', {
+      predicted_analytes: state.analytes,
+      replicate_sets: state.replicateSets,
+      calib_analytes: calibAnalytes,
+      calib_signals: calibSignals,
+      gamma: rootState.calibration.figuresOfMerit.gamma,
+      slope: rootState.calibration.regression.slope.value
+    })
+    .then((response) => {
+      commit('updatePredictionUncertainty', {
+        plusMinus: response.data[0],
+        deviation: response.data[1],
+        relDeviation: response.data[2]
+      });
     })
     .catch((error) => {
       console.log(error);

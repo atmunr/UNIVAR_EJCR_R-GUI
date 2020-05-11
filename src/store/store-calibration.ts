@@ -228,9 +228,31 @@ const actions = {
 	}
 };
 
+const getters = {
+
+  getCalibrationSamples: (state) => {
+    let analytes : Number[] = [];
+    for (let row = 0; row < state.samples.length; row++) {
+      analytes.push(state.samples[row][0]);
+    }
+
+    let replicateSets : Number[][] = [];
+    for (let row = 0; row < state.samples.length; row++) {
+      replicateSets.push([]);
+      for (let col = 1; col < state.samples[row].length; col++) {
+        replicateSets[row].push(state.samples[row][col]);
+      }
+    }
+
+    return [analytes, replicateSets];
+  }
+
+}
+
 export default {
 	namespaced: true,
 	state,
 	actions,
-	mutations
+	mutations,
+	getters
 };

@@ -77,14 +77,6 @@
           :glossy="plots.current === 'residuals' && plots.urls['residuals'] !== ''"
         />
       </q-card-section>
-      <q-card-section>
-        <q-btn
-          class="full-width"
-          color="red" text-color="white"
-          label="TEST" no-caps
-          @click="updatePredictionValues()"
-        />
-      </q-card-section>
     </q-card>
   </div>
 </template>
@@ -93,13 +85,7 @@
   import { mapState, mapActions } from 'vuex';
 
   export default {
-    computed: {
-      ...mapState('ui', ['plots', 'shownValues', 'valuesStatus']),
-      ...mapState('prediction', ['analytes'])
-    },
-    methods: {
-      ...mapActions('ui', ['updateCurrentPlot', 'updateShownValues']),
-      ...mapActions('prediction', ['updatePredictionValues'])
-    }
+    computed: mapState('ui', ['plots', 'shownValues', 'valuesStatus']),
+    methods: mapActions('ui', ['updateCurrentPlot', 'updateShownValues'])
   }
 </script>

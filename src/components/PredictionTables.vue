@@ -19,9 +19,9 @@
           samples.push({
             name: 'Sample ' + (i + 1),
             analyteConcentration: state.analytes[i],
-            plusMinus: null,
-            deviation: null,
-            relDeviation: null
+            plusMinus: Math.abs(state.plusMinus[i]),
+            deviation: state.deviation[i],
+            relDeviation: state.relDeviation[i]
           });
         }
 
