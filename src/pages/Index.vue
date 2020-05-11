@@ -4,7 +4,7 @@
     <div class="row q-pa-lg">
       <div class="col-3 text-center">
         <action-buttons
-          @calibrationButtonPressed="showCalibrationForm = true"
+          @calibrationButtonPressed="showDataInputForm = true"
         />
       </div>
       <div class="col-9">
@@ -40,8 +40,8 @@
       />
     </div>
 
-		<q-dialog v-model="showCalibrationForm">
-		  <edit-calibration-data @formSubmitted="showCalibrationForm = false" />
+		<q-dialog v-model="showDataInputForm">
+		  <data-input-form @formSubmitted="showDataInputForm = false" />
 		</q-dialog>
 
   </q-page>
@@ -53,13 +53,13 @@
   export default {
     name: 'PageIndex',
     data () {
-      let showCalibrationForm : Boolean = false;
+      let showDataInputForm : Boolean = false;
 
-      return { showCalibrationForm };
+      return { showDataInputForm };
     },
     computed: mapState('ui', ['plots', 'shownValues', 'valuesStatus']),
 	  components: {
-	    'edit-calibration-data' : require('components/CalibrationForm.vue').default,
+	    'data-input-form' : require('components/DataInputForm.vue').default,
 	    'action-buttons' : require('components/ActionButtons.vue').default,
 	    'calibration-tables' : require('components/CalibrationTables.vue').default,
 	    'prediction-tables' : require('components/PredictionTables.vue').default

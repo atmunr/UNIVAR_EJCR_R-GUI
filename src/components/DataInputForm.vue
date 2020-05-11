@@ -1,7 +1,7 @@
 <template>
   <q-card>
-	  <q-card-section class="row">
-      <div class="text-h6">Edit calibration data</div>
+	  <q-card-section class="q-gutter-lg row">
+      <div class="text-h6">Submit data</div>
       <q-space />
       <q-btn flat round dense icon="close" v-close-popup />
     </q-card-section>
