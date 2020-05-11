@@ -47,8 +47,22 @@
     computed: mapState('ui', ['fileNames', 'valuesStatus']),
     methods: {
 		  ...mapActions('calibration', ['updateCalibrationValues']),
+		  ...mapActions('prediction', ['clearPredictionValues', 'updatePredictionValues']),
       submitForm () {
-        Papa.parse(this.calibrationValuesFile, {
+
+        if (this.calibrationValuesFile !== undefined) {
+          this.processCalibrationFile(this.calibrationValuesFile);
+        }
+
+        if (this.predictionValuesFile !== undefined) {
+          this.processPredictionFile(this.predictionValuesFile);
+        }
+
+        this.$emit('formSubmitted');
+      },
+
+      processCalibrationFile (file : File) {
+        Papa.parse(file, {
           header: false,
           delimiter: ' ',
           dynamicTyping: true,
@@ -57,13 +71,31 @@
             for (let row = 0; row < results.data.length; row++) {
               results.data[row] = results.data[row].filter(x => x != null);
             }
+            this.clearPredictionValues();
             this.updateCalibrationValues({
               newCalibrationSamples: results.data,
-              newFileName: this.calibrationValuesFile.name
+              newFileName: file.name
             });
           }
         });
-        this.$emit('formSubmitted');
+      },
+
+      processPredictionFile (file: File) {
+        Papa.parse(file, {
+          header: false,
+          delimiter: ' ',
+          dynamicTyping: true,
+          skipEmptyLines: true,
+          complete: results => {
+            for (let row = 0; row < results.data.length; row++) {
+              results.data[row] = results.data[row].filter(x => x != null);
+            }
+            this.updatePredictionValues({
+              newReplicateSets: results.data,
+              newFileName: file.name
+            });
+          }
+        });
       }
     }
   }

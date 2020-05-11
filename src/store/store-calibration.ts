@@ -69,9 +69,6 @@ const mutations = {
     state.generalInfo.concentrationLevels = payload.concentrationLevels;
     state.generalInfo.replicates = payload.replicates;
     state.generalInfo.dataPoints = payload.dataPoints;
-
-    // TEST
-    state.fileName = 'calibration_data.txt';
 	},
 
 	updateRegressionValues (state, payload) {

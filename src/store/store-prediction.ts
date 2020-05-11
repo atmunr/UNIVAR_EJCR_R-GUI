@@ -3,35 +3,60 @@ import axios from 'axios';
 
 const state = {
 
-  replicateSets: [
-    [0.69, 0.65, 0.75],
-    [2.2, 2.13, 2.05],
-    [3.55, 3.41, 3.52],
-    [4.82, 4.71, 4.7]
-  ],
-
-  analytes: [],
-  plusMinus: [0.11391, 0.10601, 0.10361, 0.10614],
-  deviation: [0.053712, 0.049986, 0.048856, 0.050049],
-  relDeviation: [12.3489, 3.2877, 1.9101, 1.4273]
+  replicateSets: undefined,
+  analytes: undefined,
+  plusMinus: undefined,
+  deviation: undefined,
+  relDeviation: undefined,
 
 };
 
 const mutations = {
 
+  updateReplicateSets (state, newReplicateSets) {
+    state.replicateSets = newReplicateSets;
+  },
+
   updatePredictedAnalytes (state, newAnalytes) {
     state.analytes = newAnalytes;
+  },
+
+  clearPredictionValues (state) {
+    state.replicateSets = null;
+    state.analytes = null;
+    //state.plusMinus = null;
+    //state.deviation = null;
+    //state.relDeviation = null;
   }
 
 };
 
 const actions = {
 
-  async updatePredictionValues ({ commit, dispatch }) {
+  clearPredictionValues ({ commit }) {
+    commit('clearPredictionValues');
+    commit('ui/updateValuesStatus', {
+      name: 'prediction', newStatus: 'EMPTY'
+    }, { root: true });
+    commit('ui/updateFileName', {
+      target: 'prediction', newStatus: undefined
+    }, { root: true });
+  },
+
+  async updatePredictionValues ({ commit, dispatch }, payload) {
+    const replicateSets : Number[][] = payload.newReplicateSets;
+    const fileName : String = payload.newFileName;
+
     commit('ui/updateValuesStatus', {
       name: 'prediction', newStatus: 'LOADING'
     }, { root: true });
     dispatch('ui/updateShownValues', 'prediction', { root: true });
+
+    commit('updateReplicateSets', replicateSets);
+
+    commit('ui/updateFileName', {
+      target: 'prediction', newFileName: fileName
+    }, { root: true });
 
     await dispatch('getPredictionResults');
 
