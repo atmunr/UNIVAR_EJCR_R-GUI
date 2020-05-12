@@ -87,13 +87,13 @@ const actions = {
   },
 
   async getPredictionUncertainty ({ commit, rootState, rootGetters }) {
-    const [calibAnalytes, calibSignals] = rootGetters['calibration/getCalibrationSamples'];
+    const calibReplicateSets = rootGetters['calibration/getReplicateSets'];
 
     await axios.post('https://atmunr.ocpu.io/UNIVAR_EJCR_R-API/R/estimateUncertaintyOfPredictedValues/json', {
       predicted_analytes: state.analytes,
       replicate_sets: state.replicateSets,
-      calib_analytes: calibAnalytes,
-      calib_signals: calibSignals,
+      calib_analytes: rootState.calibration.dataPoints.analytes,
+      calib_signals: calibReplicateSets,
       gamma: rootState.calibration.figuresOfMerit.gamma,
       slope: rootState.calibration.regression.slope.value
     })

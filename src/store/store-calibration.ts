@@ -230,12 +230,7 @@ const actions = {
 
 const getters = {
 
-  getCalibrationSamples: (state) => {
-    let analytes : Number[] = [];
-    for (let row = 0; row < state.samples.length; row++) {
-      analytes.push(state.samples[row][0]);
-    }
-
+  getReplicateSets: (state) => {
     let replicateSets : Number[][] = [];
     for (let row = 0; row < state.samples.length; row++) {
       replicateSets.push([]);
@@ -244,7 +239,7 @@ const getters = {
       }
     }
 
-    return [analytes, replicateSets];
+    return replicateSets;
   }
 
 }
