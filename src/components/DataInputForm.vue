@@ -1,37 +1,64 @@
 <template>
   <q-card>
-	  <q-card-section class="q-gutter-lg row">
+	  <q-card-section class="q-gutter-lg row bg-primary text-black">
       <div class="text-h6">Submit data</div>
-      <q-space />
+      <q-space /> <q-space />
       <q-btn flat round dense icon="close" v-close-popup />
     </q-card-section>
 
-    <form @submit.prevent="submitForm">
+    <q-card-section class="text-black">
+      <div class="row justify-between">
+        <div class="column">
+          <q-btn
+            color="primary" text-color="black"
+            label="Calibration Data" no-caps
+            @click="fileTarget = 'calibration'"
+            :glossy="fileTarget === 'calibration'"
+          />
+          <q-btn
+            class="q-mt-md"
+            color="primary" text-color="black"
+            label="Test Data" no-caps
+            @click="fileTarget = 'prediction'"
+            :glossy="fileTarget === 'prediction'"
+          />
+        </div>
+        <div class="column">
+          <q-btn
+            color="primary" text-color="black"
+            label="EJCR" no-caps
+            @click="fileTarget = 'ejcr'"
+            :glossy="fileTarget === 'ejcr'"
+          />
+          <q-btn
+            class="q-mt-md"
+            color="primary" text-color="black"
+            label="RMSE" no-caps
+            @click="fileTarget = 'rmse'"
+            :glossy="fileTarget === 'rmse'"
+          />
+        </div>
+      </div>
+    </q-card-section>
 
-      <q-file
-        :label-color="fileNames['calibration'] ? 'primary' : ''"
-        v-model="calibrationValuesFile"
-        :label="fileNames['calibration'] ? fileNames['calibration'] : 'Calibration Data'"
+    <q-card-section>
+      <form @submit.prevent="submitForm">
+      <q-file outlined
+        v-model="newFile"
+        :disable="!fileTarget"
       >
         <template v-slot:prepend>
-          <q-icon name="attachment" :color="fileNames['calibration'] ? 'primary' : ''" />
+          <q-icon name="attach_file" />
         </template>
       </q-file>
 
-      <q-file v-if="valuesStatus['calibration'] === 'AVAILABLE'"
-        :label-color="fileNames['prediction'] ? 'primary' : ''"
-        v-model="predictionValuesFile"
-        :label="fileNames['prediction'] ? fileNames['prediction'] : 'Test Data'"
-      >
-        <template v-slot:prepend>
-          <q-icon name="attachment" :color="fileNames['prediction'] ? 'primary' : ''" />
-        </template>
-      </q-file>
-
-      <q-card-actions align="right">
-	      <q-btn v-close-popup flat dense label="Save" type="submit" />
-      </q-card-actions>
-    </form>
+        <q-card-actions align="right" class="row q-mt-md">
+          <q-btn v-close-popup label="Save" type="submit"
+            color="primary" text-color="black"
+          />
+        </q-card-actions>
+      </form>
+    </q-card-section>
   </q-card>
 </template>
 
@@ -41,27 +68,22 @@
 
   export default {
     data () {
-      let calibrationValuesFile : File, predictionValuesFile : File;
-      return { calibrationValuesFile, predictionValuesFile };
+      let newFile : File, fileTarget : String;
+      return { newFile, fileTarget };
     },
-    computed: mapState('ui', ['fileNames', 'valuesStatus']),
     methods: {
 		  ...mapActions('calibration', ['updateCalibrationValues']),
 		  ...mapActions('prediction', ['clearPredictionValues', 'updatePredictionValues']),
+
       submitForm () {
-
-        if (this.calibrationValuesFile !== undefined) {
-          this.processCalibrationFile(this.calibrationValuesFile);
-        }
-
-        if (this.predictionValuesFile !== undefined) {
-          this.processPredictionFile(this.predictionValuesFile);
+        if (this.newFile !== undefined) {
+          this.processFile(this.newFile, this.fileTarget);
         }
 
         this.$emit('formSubmitted');
       },
 
-      processCalibrationFile (file : File) {
+      parseFile (file : File, callback) {
         Papa.parse(file, {
           header: false,
           delimiter: ' ',
@@ -71,27 +93,23 @@
             for (let row = 0; row < results.data.length; row++) {
               results.data[row] = results.data[row].filter(x => x != null);
             }
-            this.clearPredictionValues();
-            this.updateCalibrationValues({
-              newCalibrationSamples: results.data,
-              newFileName: file.name
-            });
+            callback(results.data);
           }
         });
       },
 
-      processPredictionFile (file: File) {
-        Papa.parse(file, {
-          header: false,
-          delimiter: ' ',
-          dynamicTyping: true,
-          skipEmptyLines: true,
-          complete: results => {
-            for (let row = 0; row < results.data.length; row++) {
-              results.data[row] = results.data[row].filter(x => x != null);
-            }
+      processFile (file : File, target : String, parse) {
+        this.parseFile(file, (results) => {
+          if (target === 'calibration') {
+            this.clearPredictionValues();
+            this.updateCalibrationValues({
+              newCalibrationSamples: results,
+              newFileName: file.name
+            });
+          }
+          if (target === 'prediction') {
             this.updatePredictionValues({
-              newReplicateSets: results.data,
+              newReplicateSets: results,
               newFileName: file.name
             });
           }
@@ -100,7 +118,3 @@
     }
   }
 </script>
-
-<style lang="scss">
-
-</style>
