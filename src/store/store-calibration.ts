@@ -167,7 +167,7 @@ const actions = {
 	},
 
 	async getCalibrationResults ({ commit } ) {
-    await axios.post('https://atmunr.ocpu.io/UNIVAR_EJCR_R-API/R/fitSimpleLinearRegressionOLS/json', {
+    await axios.post('https://atmunr.ocpu.io/UNIVAR_EJCR_R-API/R/fitSimpleLinearRegressionOLS/json?digits=6', {
       x: state.dataPoints.analytes, y: state.dataPoints.signals
     })
     .then((response) => {
@@ -210,7 +210,7 @@ const actions = {
       return sample.slice(1, sample.length);
 	  });
 
-    axios.post('https://atmunr.ocpu.io/UNIVAR_EJCR_R-API/R/runFTest/json', {
+    axios.post('https://atmunr.ocpu.io/UNIVAR_EJCR_R-API/R/runFTest/json?digits=6', {
       replicate_sets: replicateSets,
       deviation_residuals: state.regression.residuals.deviation
     })

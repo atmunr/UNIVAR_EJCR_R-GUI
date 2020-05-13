@@ -73,7 +73,7 @@ const actions = {
   },
 
   async getPredictedAnalytes ({ commit, rootState }) {
-    await axios.post('https://atmunr.ocpu.io/UNIVAR_EJCR_R-API/R/predictAnalyteConcentrations/json', {
+    await axios.post('https://atmunr.ocpu.io/UNIVAR_EJCR_R-API/R/predictAnalyteConcentrations/json?digits=6', {
       replicate_sets: state.replicateSets,
       slope: rootState.calibration.regression.slope.value,
       intercept: rootState.calibration.regression.intercept.value
@@ -89,7 +89,7 @@ const actions = {
   async getPredictionUncertainty ({ commit, rootState, rootGetters }) {
     const calibReplicateSets = rootGetters['calibration/getReplicateSets'];
 
-    await axios.post('https://atmunr.ocpu.io/UNIVAR_EJCR_R-API/R/estimateUncertaintyOfPredictedValues/json', {
+    await axios.post('https://atmunr.ocpu.io/UNIVAR_EJCR_R-API/R/estimateUncertaintyOfPredictedValues/json?digits=6', {
       predicted_analytes: state.analytes,
       replicate_sets: state.replicateSets,
       calib_analytes: rootState.calibration.dataPoints.analytes,
