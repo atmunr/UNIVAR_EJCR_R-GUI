@@ -24,3 +24,15 @@ export function generalInfo (samples: Number[][]) {
 
   return [concentrationLevels, replicates, dataPoints];
 }
+
+export function truncateDecimals (x : Number, digits : Number) {
+  let s = x.toString();
+
+  let decimalIndex = s.indexOf('.');
+  let substrLength = (decimalIndex == -1 ? s.length : 1 ) + decimalIndex + digits;
+
+  let trimmed = s.substr(0, substrLength);
+  let res = isNaN(trimmed) ? 0 : trimmed;
+
+  return parseFloat(res);
+}

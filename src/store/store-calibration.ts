@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import axios from 'axios';
 
-import { createDataPoints, generalInfo } from './utils';
+import { createDataPoints, generalInfo, truncateDecimals } from './utils';
 
 const state = {
 
@@ -191,7 +191,7 @@ const actions = {
       const newFiguresOfMerit = {
         sensitivity: Math.abs(newRegressionValues.slope.value),
         gamma: response.data[8][0],
-        oneOverGamma: 1 / response.data[8][0],
+        oneOverGamma: truncateDecimals(1 / response.data[8][0], 6),
         decisionLimit: response.data[9][0],
         detectionLimit: response.data[10][0],
         quantitationLimit: response.data[11][0],
