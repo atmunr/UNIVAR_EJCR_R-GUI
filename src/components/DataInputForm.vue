@@ -93,6 +93,13 @@
             for (let row = 0; row < results.data.length; row++) {
               results.data[row] = results.data[row].filter(x => x != null);
             }
+            results.data.forEach((sample, row) => {
+              sample.forEach((value, column) => {
+                if (value === 'NaN') {
+                  results.data[row][column] = NaN;
+                }
+              })
+            });
             callback(results.data);
           }
         });

@@ -5,8 +5,11 @@ export function createDataPoints (samples : Number[][]) {
 
   for (let row = 0; row < samples.length; row++) {
     for (let col = 1; col < samples[row].length; col++) {
-      analytes.push(samples[row][0]);
-      signals.push(samples[row][col]);
+      if (isNaN(samples[row][col])) continue;
+      else {
+        analytes.push(samples[row][0]);
+        signals.push(samples[row][col]);
+      }
     }
   }
 
@@ -18,8 +21,12 @@ export function generalInfo (samples: Number[][]) {
 
   let replicates = 0, dataPoints = 0;
   for (let row = 0; row < samples.length; row++) {
-    replicates = Math.max(replicates, samples[row].length - 1);
-    dataPoints += (samples[row].length - 1);
+    let nonNaNSignals = samples[row].reduce((count, value) => {
+      if (value !== NaN) count++;
+      return count;
+    }) - 1;
+    replicates = Math.max(replicates, nonNaNSignals);
+    dataPoints += nonNaNSignals;
   }
 
   return [concentrationLevels, replicates, dataPoints];
