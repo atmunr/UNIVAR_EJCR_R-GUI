@@ -10,26 +10,26 @@
         <mode-selection
           :firstButton="{
             label: 'Calibration',
-            disable: valuesStatus['calibration'] === 'EMPTY',
-            highlight: shownValues === 'calibration'
+            disable: willBeDisabled('calibration'),
+            highlight: willBeHighlighted('calibration')
           }"
           @firstButtonClicked="updateShownValues('calibration')"
           :secondButton="{
             label: 'Prediction',
-            disable: valuesStatus['prediction'] === 'EMPTY',
-            highlight: shownValues === 'prediction'
+            disable: willBeDisabled('prediction'),
+            highlight: willBeHighlighted('prediction')
           }"
           @secondButtonClicked="updateShownValues('prediction')"
           :thirdButton="{
             label: 'EJCR',
-            disable: valuesStatus['ejcr'] === 'EMPTY',
-            highlight: shownValues === 'ejcr'
+            disable: willBeDisabled('ejcr'),
+            highlight: willBeHighlighted('ejcr')
           }"
           @thirdButtonClicked="updateShownValues('ejcr')"
           :fourthButton="{
             label: 'RMSE',
-            disable: valuesStatus['rmse'] === 'EMPTY',
-            highlight: shownValues === 'rmse'
+            disable: willBeDisabled('rmse'),
+            highlight: willBeHighlighted('rmse')
           }"
           @fourthButtonClicked="updateShownValues('rmse')"
         />
@@ -67,7 +67,19 @@
 
   export default {
     computed: mapState('ui', ['plots', 'shownValues', 'valuesStatus']),
-    methods: mapActions('ui', ['updateCurrentPlot', 'updateShownValues']),
+
+    methods: {
+      ...mapActions('ui', ['updateCurrentPlot', 'updateShownValues']),
+
+      willBeDisabled (name) {
+        return this.valuesStatus[name] === 'EMPTY';
+      },
+
+      willBeHighlighted (name) {
+        return this.shownValues === name;
+      }
+    },
+
     components: {
       'submit-data-button' : require('components/SubmitDataButton.vue').default,
       'mode-selection' : require('components/ModeSelection.vue').default,
