@@ -9,33 +9,29 @@
     <q-card-section class="text-black">
       <div class="row justify-between">
         <div class="column">
-          <q-btn
-            color="primary" text-color="black"
-            label="Calibration Data" no-caps
-            @click="fileTarget = 'calibration'"
-            :glossy="fileTarget === 'calibration'"
+          <mode-selection-button
+            label="Calibration Data"
+            :highlight="fileTarget === 'calibration'"
+            @clicked="fileTarget = 'calibration'"
           />
-          <q-btn
+          <mode-selection-button
             class="q-mt-md"
-            color="primary" text-color="black"
-            label="Test Data" no-caps
-            @click="fileTarget = 'prediction'"
-            :glossy="fileTarget === 'prediction'"
+            label="Test Data"
+            :highlight="fileTarget === 'prediction'"
+            @clicked="fileTarget = 'prediction'"
           />
         </div>
         <div class="column">
-          <q-btn
-            color="primary" text-color="black"
-            label="EJCR" no-caps
-            @click="fileTarget = 'ejcr'"
-            :glossy="fileTarget === 'ejcr'"
+          <mode-selection-button
+            label="EJCR"
+            :highlight="fileTarget === 'ejcr'"
+            @clicked="fileTarget = 'ejcr'"
           />
-          <q-btn
+          <mode-selection-button
             class="q-mt-md"
-            color="primary" text-color="black"
-            label="RMSE" no-caps
-            @click="fileTarget = 'rmse'"
-            :glossy="fileTarget === 'rmse'"
+            label="RMSE"
+            :highlight="fileTarget === 'rmse'"
+            @clicked="fileTarget = 'rmse'"
           />
         </div>
       </div>
@@ -122,6 +118,9 @@
           }
         });
       }
-    }
+    },
+	  components: {
+	    'mode-selection-button' : require('components/ModeSelectionButton.vue').default
+	  }
   }
 </script>

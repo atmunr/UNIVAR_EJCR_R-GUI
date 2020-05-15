@@ -9,37 +9,33 @@
       <q-card-section class="text-black">
         <div class="row justify-between">
           <div class="column">
-            <q-btn
-              color="primary" text-color="black"
-              label="Calibration" no-caps
-              @click="updateShownValues('calibration')"
+            <mode-selection-button
+              label="Calibration"
               :disable="valuesStatus['calibration'] === 'EMPTY'"
-              :glossy="shownValues === 'calibration'"
+              :highlight="shownValues === 'calibration'"
+              @clicked="updateShownValues('calibration')"
             />
-            <q-btn
+            <mode-selection-button
               class="q-mt-md"
-              color="primary" text-color="black"
-              label="Prediction" no-caps
-              @click="updateShownValues('prediction')"
+              label="Prediction"
               :disable="valuesStatus['prediction'] === 'EMPTY'"
-              :glossy="shownValues === 'prediction'"
+              :highlight="shownValues === 'prediction'"
+              @clicked="updateShownValues('prediction')"
             />
           </div>
           <div class="column">
-            <q-btn
-              color="primary" text-color="black"
-              label="EJCR" no-caps
-              @click="updateShownValues('ejcr')"
+            <mode-selection-button
+              label="EJCR"
               :disable="valuesStatus['ejcr'] === 'EMPTY'"
-              :glossy="shownValues === 'ejcr'"
+              :highlight="shownValues === 'ejcr'"
+              @clicked="updateShownValues('ejcr')"
             />
-            <q-btn
+            <mode-selection-button
               class="q-mt-md"
-              color="primary" text-color="black"
-              label="RMSE" no-caps
-              @click="updateShownValues('rmse')"
+              label="RMSE"
               :disable="valuesStatus['rmse'] === 'EMPTY'"
-              :glossy="shownValues === 'rmse'"
+              :highlight="shownValues === 'rmse'"
+              @clicked="updateShownValues('rmse')"
             />
           </div>
         </div>
@@ -51,23 +47,21 @@
         <div class="text-h6">Change plot</div>
       </q-card-section>
       <q-card-section>
-        <q-btn
+        <mode-selection-button
           class="full-width"
-          color="primary" text-color="black"
-          label="Linear regression" no-caps
-          @click="updateCurrentPlot('regression')"
+          label="Linear Regression"
           :disable="plots.urls['regression'] === ''"
-          :glossy="plots.current === 'regression' && plots.urls['regression'] !== ''"
+          :highlight="plots.current === 'regression' && plots.urls['regression'] !== ''"
+          @clicked="updateCurrentPlot('regression')"
         />
       </q-card-section>
       <q-card-section>
-        <q-btn
+        <mode-selection-button
           class="full-width"
-          color="primary" text-color="black"
-          label="Residuals" no-caps
-          @click="updateCurrentPlot('residuals')"
+          label="Residuals"
           :disable="plots.urls['residuals'] === ''"
-          :glossy="plots.current === 'residuals' && plots.urls['residuals'] !== ''"
+          :highlight="plots.current === 'residuals' && plots.urls['residuals'] !== ''"
+          @clicked="updateCurrentPlot('residuals')"
         />
       </q-card-section>
     </q-card>
@@ -80,8 +74,9 @@
   export default {
     computed: mapState('ui', ['plots', 'shownValues', 'valuesStatus']),
     methods: mapActions('ui', ['updateCurrentPlot', 'updateShownValues']),
-	  components: {
-	    'submit-data-button' : require('components/SubmitDataButton.vue').default
-	  }
+    components: {
+      'submit-data-button' : require('components/SubmitDataButton.vue').default,
+      'mode-selection-button' : require('components/ModeSelectionButton.vue').default
+    }
   }
 </script>
