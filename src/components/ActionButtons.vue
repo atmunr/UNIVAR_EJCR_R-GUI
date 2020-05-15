@@ -1,13 +1,6 @@
 <template>
   <div>
-    <div class="q-mt-lg text-h6">
-      <q-btn
-        class="full-width"
-        color="primary" text-color="black"
-        label="Submit Data" no-caps
-        @click="$emit('submitDataButtonClicked')"
-      />
-    </div>
+    <submit-data-button />
 
     <q-card class="q-mt-lg">
       <q-card-section class="bg-primary text-black">
@@ -86,6 +79,9 @@
 
   export default {
     computed: mapState('ui', ['plots', 'shownValues', 'valuesStatus']),
-    methods: mapActions('ui', ['updateCurrentPlot', 'updateShownValues'])
+    methods: mapActions('ui', ['updateCurrentPlot', 'updateShownValues']),
+	  components: {
+	    'submit-data-button' : require('components/SubmitDataButton.vue').default
+	  }
   }
 </script>

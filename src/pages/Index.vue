@@ -3,9 +3,7 @@
 
     <div class="row q-pa-lg">
       <div class="col-3 text-center">
-        <action-buttons
-          @submitDataButtonClicked="showDataInputForm = true"
-        />
+        <action-buttons />
       </div>
       <div class="col-9">
         <q-img
@@ -58,6 +56,11 @@
       return { showDataInputForm };
     },
     computed: mapState('ui', ['plots', 'shownValues', 'valuesStatus']),
+		mounted() {
+			this.$root.$on('showDataInputForm', () => {
+				this.showDataInputForm = true;
+			});
+		},
 	  components: {
 	    'data-input-form' : require('components/DataInputForm.vue').default,
 	    'action-buttons' : require('components/ActionButtons.vue').default,
