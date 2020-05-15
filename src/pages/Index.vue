@@ -4,7 +4,7 @@
     <div class="row q-pa-lg">
       <div class="col-3 text-center">
         <action-buttons
-          @calibrationButtonPressed="showDataInputForm = true"
+          @submitDataButtonClicked="showDataInputForm = true"
         />
       </div>
       <div class="col-9">

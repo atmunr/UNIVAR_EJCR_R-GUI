@@ -5,7 +5,7 @@
         class="full-width"
         color="primary" text-color="black"
         label="Submit Data" no-caps
-        @click="$emit('calibrationButtonPressed')"
+        @click="$emit('submitDataButtonClicked')"
       />
     </div>
 
