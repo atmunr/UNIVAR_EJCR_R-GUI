@@ -7,34 +7,32 @@
     </q-card-section>
 
     <q-card-section class="text-black">
-      <div class="row justify-between">
-        <div class="column">
-          <mode-selection-button
-            label="Calibration Data"
-            :highlight="fileTarget === 'calibration'"
-            @clicked="fileTarget = 'calibration'"
-          />
-          <mode-selection-button
-            class="q-mt-md"
-            label="Test Data"
-            :highlight="fileTarget === 'prediction'"
-            @clicked="fileTarget = 'prediction'"
-          />
-        </div>
-        <div class="column">
-          <mode-selection-button
-            label="EJCR"
-            :highlight="fileTarget === 'ejcr'"
-            @clicked="fileTarget = 'ejcr'"
-          />
-          <mode-selection-button
-            class="q-mt-md"
-            label="RMSE"
-            :highlight="fileTarget === 'rmse'"
-            @clicked="fileTarget = 'rmse'"
-          />
-        </div>
-      </div>
+      <mode-selection
+        :firstButton="{
+          label: 'Calibration Data',
+          disable: false,
+          highlight: fileTarget === 'calibration'
+        }"
+        @firstButtonClicked="fileTarget = 'calibration'"
+        :secondButton="{
+          label: 'Prediction Data',
+          disable: false,
+          highlight: fileTarget === 'prediction'
+        }"
+        @secondButtonClicked="fileTarget = 'prediction'"
+        :thirdButton="{
+          label: 'EJCR',
+          disable: false,
+          highlight: fileTarget === 'ejcr'
+        }"
+        @thirdButtonClicked="fileTarget = 'ejcr'"
+        :fourthButton="{
+          label: 'RMSE',
+          disable: false,
+          highlight: fileTarget === 'rmse'
+        }"
+        @fourthButtonClicked="fileTarget = 'rmse'"
+      />
     </q-card-section>
 
     <q-card-section>
@@ -120,6 +118,7 @@
       }
     },
 	  components: {
+	    'mode-selection' : require('components/ModeSelection.vue').default,
 	    'mode-selection-button' : require('components/ModeSelectionButton.vue').default
 	  }
   }

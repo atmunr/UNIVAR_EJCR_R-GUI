@@ -7,38 +7,32 @@
         <div class="text-h6">Change shown values</div>
       </q-card-section>
       <q-card-section class="text-black">
-        <div class="row justify-between">
-          <div class="column">
-            <mode-selection-button
-              label="Calibration"
-              :disable="valuesStatus['calibration'] === 'EMPTY'"
-              :highlight="shownValues === 'calibration'"
-              @clicked="updateShownValues('calibration')"
-            />
-            <mode-selection-button
-              class="q-mt-md"
-              label="Prediction"
-              :disable="valuesStatus['prediction'] === 'EMPTY'"
-              :highlight="shownValues === 'prediction'"
-              @clicked="updateShownValues('prediction')"
-            />
-          </div>
-          <div class="column">
-            <mode-selection-button
-              label="EJCR"
-              :disable="valuesStatus['ejcr'] === 'EMPTY'"
-              :highlight="shownValues === 'ejcr'"
-              @clicked="updateShownValues('ejcr')"
-            />
-            <mode-selection-button
-              class="q-mt-md"
-              label="RMSE"
-              :disable="valuesStatus['rmse'] === 'EMPTY'"
-              :highlight="shownValues === 'rmse'"
-              @clicked="updateShownValues('rmse')"
-            />
-          </div>
-        </div>
+        <mode-selection
+          :firstButton="{
+            label: 'Calibration',
+            disable: valuesStatus['calibration'] === 'EMPTY',
+            highlight: shownValues === 'calibration'
+          }"
+          @firstButtonClicked="updateShownValues('calibration')"
+          :secondButton="{
+            label: 'Prediction',
+            disable: valuesStatus['prediction'] === 'EMPTY',
+            highlight: shownValues === 'prediction'
+          }"
+          @secondButtonClicked="updateShownValues('prediction')"
+          :thirdButton="{
+            label: 'EJCR',
+            disable: valuesStatus['ejcr'] === 'EMPTY',
+            highlight: shownValues === 'ejcr'
+          }"
+          @thirdButtonClicked="updateShownValues('ejcr')"
+          :fourthButton="{
+            label: 'RMSE',
+            disable: valuesStatus['rmse'] === 'EMPTY',
+            highlight: shownValues === 'rmse'
+          }"
+          @fourthButtonClicked="updateShownValues('rmse')"
+        />
       </q-card-section>
     </q-card>
 
@@ -76,6 +70,7 @@
     methods: mapActions('ui', ['updateCurrentPlot', 'updateShownValues']),
     components: {
       'submit-data-button' : require('components/SubmitDataButton.vue').default,
+      'mode-selection' : require('components/ModeSelection.vue').default,
       'mode-selection-button' : require('components/ModeSelectionButton.vue').default
     }
   }
