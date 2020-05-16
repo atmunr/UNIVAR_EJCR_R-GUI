@@ -6,24 +6,7 @@
         <action-buttons />
       </div>
       <div class="col-9">
-        <q-img
-          v-if="plots.current === 'regression' && plots.urls.regression !== ''"
-          :src="plots.urls.regression"
-          spinner-color="white" contain
-          style="max-height: 550px; max-width: 1500px"
-        />
-        <q-img
-          v-else-if="plots.current === 'residuals' && plots.urls.residuals !== ''"
-          :src="plots.urls.residuals"
-          spinner-color="white" contain
-          style="max-height: 550px; max-width: 1500px"
-        />
-	      <div v-else>
-	        <div class="q-pa-lg q-ma-lg text-h5 text-primary no-plot">
-	          Upload files using the options on the left and the plots
-	          will appear over here.
-	        </div>
-        </div>
+        <plots />
       </div>
     </div>
 
@@ -55,13 +38,14 @@
 
       return { showDataInputForm };
     },
-    computed: mapState('ui', ['plots', 'shownValues', 'valuesStatus']),
+    computed: mapState('ui', ['shownValues', 'valuesStatus']),
 		mounted() {
 			this.$root.$on('showDataInputForm', () => {
 				this.showDataInputForm = true;
 			});
 		},
 	  components: {
+	    'plots' : require('components/Plots/Plots.vue').default,
 	    'data-input-form' : require('components/ActionButtons/SubmitData/DataInputForm.vue').default,
 	    'action-buttons' : require('components/ActionButtons/ActionButtons.vue').default,
 	    'calibration-tables' : require('components/Tables/CalibrationTables.vue').default,
