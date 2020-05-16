@@ -42,7 +42,7 @@
   		fourthButton: Object
   	},
     components: {
-      'mode-selection-button' : require('components/ModeSelectionButton.vue').default
+      'mode-selection-button' : require('components/Shared/ModeSelectionButton.vue').default
     }
   }
 </script>

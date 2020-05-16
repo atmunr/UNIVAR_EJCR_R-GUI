@@ -82,8 +82,8 @@
 
     components: {
       'submit-data-button' : require('components/SubmitDataButton.vue').default,
-      'mode-selection' : require('components/ModeSelection.vue').default,
-      'mode-selection-button' : require('components/ModeSelectionButton.vue').default
+      'mode-selection' : require('components/Shared/ModeSelection.vue').default,
+      'mode-selection-button' : require('components/Shared/ModeSelectionButton.vue').default
     }
   }
 </script>
