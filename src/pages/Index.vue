@@ -2,12 +2,8 @@
   <q-page class="q-pa-md">
 
     <div class="row q-pa-lg">
-      <div class="col-3 text-center">
-        <action-buttons />
-      </div>
-      <div class="col-9">
-        <plots />
-      </div>
+      <action-buttons class="col-3"/>
+      <plots class="col-9"/>
     </div>
 
     <div class="q-pa-lg ">

@@ -1,9 +1,7 @@
 <template>
-  <div>
+  <div class="text-center">
     <submit-data-button />
-
     <values-selection />
-
     <plot-selection />
   </div>
 </template>
