@@ -34,7 +34,7 @@
   </q-card>
 </template>
 
-<script>
+<script lang="ts">
   import { mapState, mapActions } from 'vuex';
 
   export default {
@@ -43,11 +43,11 @@
     methods: {
       ...mapActions('ui', ['updateShownValues']),
 
-      willBeDisabled (name) {
+      willBeDisabled (name : String) {
         return this.valuesStatus[name] === 'EMPTY';
       },
 
-      willBeHighlighted (name) {
+      willBeHighlighted (name : String) {
         return this.shownValues === name;
       }
     },

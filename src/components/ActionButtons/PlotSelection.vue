@@ -24,7 +24,7 @@
   </q-card>
 </template>
 
-<script>
+<script lang="ts">
   import { mapState, mapActions } from 'vuex';
 
   export default {
@@ -33,11 +33,11 @@
     methods: {
       ...mapActions('ui', ['updateCurrentPlot']),
 
-      willBeDisabled (name) {
+      willBeDisabled (name : String) {
         return this.plots.urls[name] === '';
       },
 
-      willBeHighlighted (name) {
+      willBeHighlighted (name : String) {
         if (this.willBeDisabled(name)) return false;
         return this.plots.current === name;
       }

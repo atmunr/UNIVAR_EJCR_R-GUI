@@ -15,7 +15,7 @@
   export default {
     computed: mapState('ui', ['shownValues', 'valuesStatus']),
     methods: {
-      showTable (name) {
+      showTable (name : String) {
         if (this.valuesStatus[name] !== 'AVAILABLE') return false;
         return this.shownValues === name;
       }

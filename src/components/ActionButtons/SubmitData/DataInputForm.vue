@@ -77,7 +77,7 @@
         this.$emit('formSubmitted');
       },
 
-      parseFile (file : File, callback) {
+      parseFile (file : File, callback : Function) {
         Papa.parse(file, {
           header: false,
           delimiter: ' ',
@@ -99,7 +99,7 @@
         });
       },
 
-      processFile (file : File, target : String, parse) {
+      processFile (file : File, target : String) {
         this.parseFile(file, (results) => {
           if (target === 'calibration') {
             this.clearPredictionValues();

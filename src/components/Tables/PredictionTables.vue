@@ -8,13 +8,21 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
   import { mapState } from 'vuex';
 
   export default {
     computed: mapState('prediction', {
       predictionInfoTable: state => {
-        let samples = [];
+
+        let samples : {
+          name: String,
+          analyteConcentration: Number,
+          plusMinus: Number,
+          deviation: Number,
+          relDeviation: Number
+        }[] = [];
+
         for (let i = 0; i < state.analytes.length; i++) {
           samples.push({
             name: 'Sample ' + (i + 1),
