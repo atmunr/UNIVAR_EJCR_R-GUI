@@ -38,7 +38,7 @@
   import { mapState, mapActions } from 'vuex';
 
   export default {
-    computed: mapState('ui', ['plots', 'shownValues', 'valuesStatus']),
+    computed: mapState('ui', ['shownValues', 'valuesStatus']),
 
     methods: {
       ...mapActions('ui', ['updateShownValues']),

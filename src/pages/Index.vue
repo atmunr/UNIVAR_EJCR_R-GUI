@@ -62,8 +62,8 @@
 			});
 		},
 	  components: {
-	    'data-input-form' : require('components/DataInputForm.vue').default,
-	    'action-buttons' : require('components/ActionButtons.vue').default,
+	    'data-input-form' : require('components/ActionButtons/SubmitData/DataInputForm.vue').default,
+	    'action-buttons' : require('components/ActionButtons/ActionButtons.vue').default,
 	    'calibration-tables' : require('components/Tables/CalibrationTables.vue').default,
 	    'prediction-tables' : require('components/Tables/PredictionTables.vue').default
 	  }
