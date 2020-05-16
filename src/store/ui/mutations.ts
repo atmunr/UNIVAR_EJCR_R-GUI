@@ -1,0 +1,20 @@
+
+export function updateValuesStatus (state, payload) {
+  state.valuesStatus[payload.name] = payload.newStatus;
+}
+
+export function updatePlotUrl (state, payload) {
+	state.plots.urls[payload.name] = payload.newUrl;
+}
+
+export function updateCurrentPlot (state, plot) {
+  state.plots.current = plot;
+}
+
+export function updateShownValues (state, newShownValues) {
+	state.shownValues = newShownValues;
+}
+
+export function updateFileName (state, payload) {
+  state.fileNames[payload.target] = payload.newFileName;
+}

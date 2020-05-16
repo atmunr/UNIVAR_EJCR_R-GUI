@@ -1,9 +1,9 @@
 import { store } from 'quasar/wrappers';
 import Vuex from 'vuex';
 
-import calibration from './store-calibration';
-import prediction from './store-prediction';
-import ui from './store-ui';
+import calibration from './calibration/index';
+import prediction from './prediction/index';
+import ui from './ui/index.ts';
 
 export default store(function ({ Vue }) {
   Vue.use(Vuex);

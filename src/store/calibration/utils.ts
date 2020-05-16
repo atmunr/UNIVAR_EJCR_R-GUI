@@ -1,6 +1,5 @@
 
 export function createDataPoints (samples : Number[][]) {
-
   let analytes : Number[] = [], signals : Number[] = [];
 
   for (let row = 0; row < samples.length; row++) {
