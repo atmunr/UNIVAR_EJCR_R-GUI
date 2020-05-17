@@ -1,6 +1,6 @@
 
 export function updateValuesStatus (state, payload) {
-  state.valuesStatus[payload.name] = payload.newStatus;
+  state.valuesAvailable[payload.name] = payload.available;
 }
 
 export function updatePlotUrl (state, payload) {

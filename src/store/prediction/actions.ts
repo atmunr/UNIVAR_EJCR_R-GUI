@@ -14,7 +14,7 @@ export function clearPredictionValues ({ commit }) {
 
 export async function updatePredictionValues ({ commit, dispatch }, payload) {
   commit('ui/updateValuesStatus', {
-    name: 'prediction', newStatus: 'LOADING'
+    name: 'prediction', available: false
   }, { root: true });
 
   const replicateSets : Number[][] = payload.newReplicateSets;
@@ -29,7 +29,7 @@ export async function updatePredictionValues ({ commit, dispatch }, payload) {
   await dispatch('getPredictionUncertainty');
 
   commit('ui/updateValuesStatus', {
-    name: 'prediction', newStatus: 'AVAILABLE'
+    name: 'prediction', available: true
   }, { root: true });
 
   dispatch('ui/updateShownValues', 'prediction', { root: true });

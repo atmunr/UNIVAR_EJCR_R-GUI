@@ -38,13 +38,13 @@
   import { mapState, mapActions } from 'vuex';
 
   export default {
-    computed: mapState('ui', ['shownValues', 'valuesStatus']),
+    computed: mapState('ui', ['shownValues', 'valuesAvailable']),
 
     methods: {
       ...mapActions('ui', ['updateShownValues']),
 
       willBeDisabled (name : String) {
-        return this.valuesStatus[name] === 'EMPTY';
+        return !this.valuesAvailable[name];
       },
 
       willBeHighlighted (name : String) {

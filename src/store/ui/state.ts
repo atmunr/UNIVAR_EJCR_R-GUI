@@ -17,11 +17,11 @@ export default {
 
   shownValues: undefined,
 
-  valuesStatus: {
-    calibration: 'EMPTY',
-    prediction: 'EMPTY',
-    ejcr: 'EMPTY',
-    rmse: 'EMPTY'
+  valuesAvailable: {
+    calibration: false,
+    prediction: false,
+    ejcr: false,
+    rmse: false,
   }
 
 };

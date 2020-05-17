@@ -10,7 +10,7 @@ export async function updateCalibrationValues ({ commit, dispatch }, payload) {
   const newFileName : String = payload.newFileName;
 
   commit('ui/updateValuesStatus', {
-    name: 'calibration', newStatus: 'LOADING'
+    name: 'calibration', available: false
   }, { root: true });
   dispatch('ui/updateShownValues', 'calibration', { root: true });
 
@@ -26,7 +26,7 @@ export async function updateCalibrationValues ({ commit, dispatch }, payload) {
   dispatch('getLinearityTestResults');
 
   commit('ui/updateValuesStatus', {
-    name: 'calibration', newStatus: 'AVAILABLE'
+    name: 'calibration', available: true
   }, { root: true });
 
   commit('ui/updateFileName', {

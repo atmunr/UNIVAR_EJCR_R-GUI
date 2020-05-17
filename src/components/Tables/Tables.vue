@@ -13,10 +13,10 @@
   import { mapState } from 'vuex';
 
   export default {
-    computed: mapState('ui', ['shownValues', 'valuesStatus']),
+    computed: mapState('ui', ['shownValues', 'valuesAvailable']),
     methods: {
       showTable (name : String) {
-        if (this.valuesStatus[name] !== 'AVAILABLE') return false;
+        if (!this.valuesAvailable[name]) return false;
         return this.shownValues === name;
       }
     },
