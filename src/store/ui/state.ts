@@ -17,6 +17,8 @@ export default {
 
   shownValues: undefined,
 
+  loadingRequest: false,
+
   valuesAvailable: {
     calibration: false,
     prediction: false,

@@ -40,3 +40,9 @@ export function updateShownValues ({ commit, dispatch }, shownValues) {
 export function updateCurrentPlot ({ commit }, plot) {
   commit('updateCurrentPlot', plot);
 }
+
+export function processRequest ({ commit }, callback) {
+  commit('setLoadingRequestStatus', true, { root: true });
+  callback();
+  commit('setLoadingRequestStatus', true, { root: true });
+}

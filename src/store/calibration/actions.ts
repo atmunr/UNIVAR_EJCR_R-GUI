@@ -9,6 +9,8 @@ export async function updateCalibrationValues ({ commit, dispatch }, payload) {
   const newCalibrationSamples : Number[][] = payload.newCalibrationSamples;
   const newFileName : String = payload.newFileName;
 
+  commit('ui/setLoadingRequestStatus', true, { root: true });
+
   commit('ui/updateValuesStatus', {
     name: 'calibration', available: false
   }, { root: true });
@@ -48,6 +50,8 @@ export async function updateCalibrationValues ({ commit, dispatch }, payload) {
     slope: 0, intercept: 0,
     plotName: 'residuals'
   }, { root: true });
+
+  commit('ui/setLoadingRequestStatus', false, { root: true });
 }
 
 

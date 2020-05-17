@@ -13,6 +13,9 @@ export function clearPredictionValues ({ commit }) {
 }
 
 export async function updatePredictionValues ({ commit, dispatch }, payload) {
+
+  commit('ui/setLoadingRequestStatus', true, { root: true });
+
   commit('ui/updateValuesStatus', {
     name: 'prediction', available: false
   }, { root: true });
@@ -28,9 +31,12 @@ export async function updatePredictionValues ({ commit, dispatch }, payload) {
   await dispatch('getPredictedAnalytes');
   await dispatch('getPredictionUncertainty');
 
+  commit('ui/setLoadingRequestStatus', false, { root: true });
+
   commit('ui/updateValuesStatus', {
     name: 'prediction', available: true
   }, { root: true });
+
 
   dispatch('ui/updateShownValues', 'prediction', { root: true });
 }
