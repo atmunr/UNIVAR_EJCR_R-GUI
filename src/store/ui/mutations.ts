@@ -5,7 +5,6 @@ export function updateValuesStatus (state, payload) {
 
 export function updatePlotUrl (state, payload) {
 	state.plots.urls[payload.name] = payload.newUrl;
-	console.log(payload.newUrl);
 }
 
 export function updateCurrentPlot (state, plot) {
@@ -22,5 +21,4 @@ export function updateFileName (state, payload) {
 
 export function setLoadingRequestStatus (state, newStatus) {
   state.loadingRequest = newStatus;
-  console.log(newStatus);
 }

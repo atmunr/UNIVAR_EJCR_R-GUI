@@ -66,7 +66,7 @@
       return { newFile, fileTarget };
     },
     methods: {
-		  ...mapActions('calibration', ['updateCalibrationValues']),
+		  ...mapActions('calibration', ['calibrate']),
 		  ...mapActions('prediction', ['clearPredictionValues', 'updatePredictionValues']),
 
       submitForm () {
@@ -103,9 +103,9 @@
         this.parseFile(file, (results) => {
           if (target === 'calibration') {
             this.clearPredictionValues();
-            this.updateCalibrationValues({
-              newCalibrationSamples: results,
-              newFileName: file.name
+            this.calibrate({
+              samples: results,
+              fileName: file.name
             });
           }
           if (target === 'prediction') {

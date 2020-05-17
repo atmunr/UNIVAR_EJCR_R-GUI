@@ -4,71 +4,69 @@ import axios from 'axios';
 
 import { createDataPoints, generalInfo, truncateDecimals } from './utils';
 
-export async function updateCalibrationValues ({ commit, dispatch }, payload) {
-
-  const newCalibrationSamples : Number[][] = payload.newCalibrationSamples;
-  const newFileName : String = payload.newFileName;
+export async function calibrate ({ commit, dispatch }, payload) {
+  const samples : Number[][] = payload.samples;
+  const fileName : String = payload.fileName;
 
   commit('ui/setLoadingRequestStatus', true, { root: true });
 
   commit('ui/updateValuesStatus', {
     name: 'calibration', available: false
   }, { root: true });
-  dispatch('ui/updateShownValues', 'calibration', { root: true });
 
-  let [analytes, signals] = createDataPoints(newCalibrationSamples);
-	commit('updateCalibrationValues', {
-		newCalibrationSamples: newCalibrationSamples,
-		newAnalytes: analytes,
-		newSignals: signals
-	});
-  dispatch('updateGeneralInfo', newCalibrationSamples);
-
-  await dispatch('getCalibrationResults');
-  dispatch('getLinearityTestResults');
+  await dispatch('updateLocalValues', samples);
+  await dispatch('contactAPI');
 
   commit('ui/updateValuesStatus', {
     name: 'calibration', available: true
   }, { root: true });
 
   commit('ui/updateFileName', {
-    target: 'calibration', newFileName: newFileName
-  }, { root: true });
-
-  // Get new linear regression plot
-  dispatch('ui/getNewPlot', {
-    x: state.dataPoints.analytes, y: state.dataPoints.signals,
-    title: 'Linear regression', xlabel: 'Concentration', ylabel: 'Response',
-    slope: state.regression.slope.value, intercept: state.regression.intercept.value,
-    plotName: 'regression'
-  }, { root: true });
-
-  // Get new plot of residuals
-  dispatch('ui/getNewPlot', {
-    x: state.dataPoints.analytes, y: state.regression.residuals.values,
-    title: 'Residuals', xlabel: 'Concentration', ylabel: 'Residual',
-    slope: 0, intercept: 0,
-    plotName: 'residuals'
+    target: 'calibration', newFileName: fileName
   }, { root: true });
 
   commit('ui/setLoadingRequestStatus', false, { root: true });
+
+  dispatch('ui/updateShownValues', 'calibration', { root: true });
 }
 
+export async function updateLocalValues ({ dispatch }, samples) {
+  await dispatch('updateCalibrationValues', samples);
+  dispatch('updateGeneralInfo', samples);
+}
 
-export function updateGeneralInfo ({ commit }, newCalibrationSamples) {
-	let [newConcentrationLevels,
-	  newReplicates,
-	  newDataPoints
-	] = generalInfo(newCalibrationSamples);
+export function updateCalibrationValues ({ commit }, samples) {
+  let [analytes, signals] = createDataPoints(samples);
+
+	commit('updateCalibrationValues', {
+		newCalibrationSamples: samples,
+		newAnalytes: analytes,
+		newSignals: signals
+	});
+}
+
+export function updateGeneralInfo ({ commit }, samples) {
+	let [
+	  concentrationLevels,
+	  replicates,
+	  dataPoints
+	] = generalInfo(samples);
 
   commit('updateGeneralInfo', {
-    concentrationLevels: newConcentrationLevels,
-    replicates: newReplicates,
-    dataPoints: newDataPoints
+    concentrationLevels: concentrationLevels,
+    replicates: replicates,
+    dataPoints: dataPoints
   });
 }
 
-export async function getCalibrationResults ({ commit } ) {
+
+export async function contactAPI ({ dispatch }) {
+  await dispatch('getRegressionResults');
+  dispatch('getLinearityTestResults');
+  dispatch('getNewPlots');
+}
+
+export async function getRegressionResults ({ commit }) {
   await axios.post('https://atmunr.ocpu.io/UNIVAR_EJCR_R-API/R/fitSimpleLinearRegressionOLS/json?digits=6', {
     x: state.dataPoints.analytes, y: state.dataPoints.signals
   })
@@ -127,4 +125,22 @@ export function getLinearityTestResults ({ commit }) {
     commit('updateLinearityTestValues', newLinearityTestValues);
   })
   .catch((error) => { console.log(error); });
+}
+
+export function getNewPlots ({ dispatch }) {
+  // Get new linear regression plot
+  dispatch('ui/getNewPlot', {
+    x: state.dataPoints.analytes, y: state.dataPoints.signals,
+    title: 'Linear regression', xlabel: 'Concentration', ylabel: 'Response',
+    slope: state.regression.slope.value, intercept: state.regression.intercept.value,
+    plotName: 'regression'
+  }, { root: true });
+
+  // Get new plot of residuals
+  dispatch('ui/getNewPlot', {
+    x: state.dataPoints.analytes, y: state.regression.residuals.values,
+    title: 'Residuals', xlabel: 'Concentration', ylabel: 'Residual',
+    slope: 0, intercept: 0,
+    plotName: 'residuals'
+  }, { root: true });
 }
