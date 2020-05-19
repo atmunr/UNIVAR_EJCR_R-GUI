@@ -1,6 +1,6 @@
 <template>
   <div v-if="loadingPlot">
-	  <div class="q-pa-lg q-ma-lg text-h5 text-primary no-plot">
+	  <div class="q-pa-lg q-ma-lg text-h5 text-info no-plot">
 	    Processing request...
 	  </div>
   </div>
@@ -8,7 +8,7 @@
     <plot :url="selectedPlotUrl" />
   </div>
   <div v-else>
-	  <div class="q-pa-lg q-ma-lg text-h5 text-primary no-plot">
+	  <div class="q-pa-lg q-ma-lg text-h5 text-info no-plot">
 	    Upload files using the options on the left and the plots
 	    will appear over here.
 	  </div>
