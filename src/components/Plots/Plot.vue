@@ -1,7 +1,7 @@
 <template>
   <q-img
     :src="url"
-    spinner-color="white" contain
+    spinner-color="black" contain
     style="max-height: 550px; max-width: 1500px"
   />
 </template>

@@ -143,4 +143,6 @@ export function getNewPlots ({ dispatch }) {
     slope: 0, intercept: 0,
     plotName: 'residuals'
   }, { root: true });
+
+  dispatch('ui/updateCurrentPlot', 'residuals', { root: true });
 }

@@ -19,15 +19,17 @@ export function getNewPlot ({ commit, dispatch }, payload) {
 	  commit('updatePlotUrl', {
 	    name: payload.plotName, newUrl: newUrl
 	  });
-	  dispatch('updateCurrentPlot', payload.plotName);
   })
   .catch((error) => {
     console.log(error);
 	  commit('updatePlotUrl', {
 	    name: payload.plotName, newUrl: ''
 	  });
-	  dispatch('updateCurrentPlot', payload.plotName);
   });
+}
+
+export function updateCurrentPlot ({ commit }, plot) {
+  commit('updateCurrentPlot', plot);
 }
 
 export function updateShownValues ({ commit, dispatch }, shownValues) {
@@ -35,10 +37,6 @@ export function updateShownValues ({ commit, dispatch }, shownValues) {
   if (defaultPlots[shownValues] !== undefined) {
 	  commit('updateCurrentPlot', defaultPlots[shownValues]);
   }
-}
-
-export function updateCurrentPlot ({ commit }, plot) {
-  commit('updateCurrentPlot', plot);
 }
 
 export function processRequest ({ commit }, callback) {
