@@ -22,13 +22,13 @@
         @secondButtonClicked="fileTarget = 'prediction'"
         :thirdButton="{
           label: 'EJCR',
-          disable: false,
+          disable: true,
           highlight: fileTarget === 'ejcr'
         }"
         @thirdButtonClicked="fileTarget = 'ejcr'"
         :fourthButton="{
           label: 'RMSE',
-          disable: false,
+          disable: true,
           highlight: fileTarget === 'rmse'
         }"
         @fourthButtonClicked="fileTarget = 'rmse'"
