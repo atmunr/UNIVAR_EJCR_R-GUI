@@ -1,6 +1,6 @@
 
-export function createDataPoints (samples : Number[][]) {
-  let analytes : Number[] = [], signals : Number[] = [];
+export function createDataPoints (samples) {
+  let analytes = [], signals = [];
 
   for (let row = 0; row < samples.length; row++) {
     for (let col = 1; col < samples[row].length; col++) {
@@ -15,7 +15,7 @@ export function createDataPoints (samples : Number[][]) {
   return [analytes, signals];
 }
 
-export function generalInfo (samples: Number[][]) {
+export function generalInfo (samples) {
   const concentrationLevels = samples.length;
 
   let replicates = 0, dataPoints = 0;
@@ -31,7 +31,7 @@ export function generalInfo (samples: Number[][]) {
   return [concentrationLevels, replicates, dataPoints];
 }
 
-export function truncateDecimals (x : Number, digits : Number) {
+export function truncateDecimals (x, digits) {
   let s = x.toString();
 
   let decimalIndex = s.indexOf('.');

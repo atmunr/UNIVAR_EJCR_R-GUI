@@ -40,7 +40,7 @@ module.exports = configure(function (ctx) {
     },
     supportIE: true,
     supportTS: {
-      tsCheckerConfig: { eslint: true }
+      tsCheckerConfig: { eslint: false }
     },
 
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
@@ -59,6 +59,7 @@ module.exports = configure(function (ctx) {
       // https://quasar.dev/quasar-cli/cli-documentation/handling-webpack
       extendWebpack (cfg) {
         // linting is slow in TS projects, we execute it only for production builds
+        /*
         if (ctx.prod) {
           cfg.module.rules.push({
             enforce: 'pre',
@@ -70,6 +71,7 @@ module.exports = configure(function (ctx) {
             }
           })
         }
+        */
       }
     },
 

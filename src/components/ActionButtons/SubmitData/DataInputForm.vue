@@ -56,13 +56,13 @@
   </q-card>
 </template>
 
-<script lang="ts">
+<script>
   import { mapState, mapActions } from 'vuex';
   import Papa from 'papaparse';
 
   export default {
     data () {
-      let newFile : File, fileTarget : String;
+      let newFile, fileTarget;
       return { newFile, fileTarget };
     },
     methods: {
@@ -77,7 +77,7 @@
         this.$emit('formSubmitted');
       },
 
-      parseFile (file : File, callback : Function) {
+      parseFile (file, callback) {
         Papa.parse(file, {
           header: false,
           delimiter: ' ',
@@ -99,7 +99,7 @@
         });
       },
 
-      processFile (file : File, target : String) {
+      processFile (file, target) {
         this.parseFile(file, (results) => {
           if (target === 'calibration') {
             this.clearPredictionValues();

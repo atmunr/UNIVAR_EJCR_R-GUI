@@ -3,7 +3,7 @@ import Vuex from 'vuex';
 
 import calibration from './calibration/index';
 import prediction from './prediction/index';
-import ui from './ui/index.ts';
+import ui from './ui/index';
 
 export default store(function ({ Vue }) {
   Vue.use(Vuex);

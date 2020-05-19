@@ -21,15 +21,15 @@
   export default {
     computed: mapState('ui', {
       loadingPlot: state => {
-        return state.loadingRequest;
+        return state['loadingRequest'];
       },
       selectedPlotUrl: state => {
-        const selectedPlot = state.plots.current;
-        return state.plots.urls[selectedPlot];
+        const selectedPlot = state['plots'].current;
+        return state['plots'].urls[selectedPlot];
       },
       selectedPlotAvailable: state => {
-        const selectedPlot = state.plots.current;
-        return state.plots.urls[selectedPlot] !== '';
+        const selectedPlot = state['plots'].current;
+        return state['plots'].urls[selectedPlot] !== '';
       }
     }),
 

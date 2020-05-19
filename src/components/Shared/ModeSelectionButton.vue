@@ -13,9 +13,9 @@
 <script>
 	export default {
 		props: {
-  		label: String,
-  		disable: Boolean,
-  		highlight: Boolean
+      label: String,
+      disable: Boolean,
+      highlight: Boolean
   	}
 	}
 </script>

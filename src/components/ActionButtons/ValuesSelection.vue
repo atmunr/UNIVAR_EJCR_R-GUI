@@ -43,11 +43,11 @@
     methods: {
       ...mapActions('ui', ['updateShownValues']),
 
-      willBeDisabled (name : String) {
+      willBeDisabled (name) {
         return !this.valuesAvailable[name];
       },
 
-      willBeHighlighted (name : String) {
+      willBeHighlighted (name) {
         return this.shownValues === name;
       }
     },

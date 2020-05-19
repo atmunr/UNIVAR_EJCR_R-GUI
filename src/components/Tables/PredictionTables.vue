@@ -23,13 +23,13 @@
           relDeviation: Number
         }[] = [];
 
-        for (let i = 0; i < state.analytes.length; i++) {
+        for (let i = 0; i < state['analytes'].length; i++) {
           samples.push({
             name: 'Sample ' + (i + 1),
-            analyteConcentration: state.analytes[i],
-            plusMinus: Math.abs(state.plusMinus[i]),
-            deviation: state.deviation[i],
-            relDeviation: state.relDeviation[i]
+            analyteConcentration: state['analytes'][i],
+            plusMinus: Math.abs(state['plusMinus'][i]),
+            deviation: state['deviation'][i],
+            relDeviation: state['relDeviation'][i]
           });
         }
 

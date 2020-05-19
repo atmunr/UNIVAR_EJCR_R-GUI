@@ -33,11 +33,11 @@
     methods: {
       ...mapActions('ui', ['updateCurrentPlot']),
 
-      willBeDisabled (name : String) {
+      willBeDisabled (name) {
         return this.plots.urls[name] === '';
       },
 
-      willBeHighlighted (name : String) {
+      willBeHighlighted (name) {
         if (this.willBeDisabled(name)) return false;
         return this.plots.current === name;
       }
