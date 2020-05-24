@@ -2,7 +2,8 @@
 import state from './state'
 import axios from 'axios';
 
-import { createDataPoints, generalInfo, truncateDecimals } from './utils';
+// @ts-ignore: .ts extension
+import { createDataPoints, generalInfo, truncateDecimals } from './utils.ts';
 
 export async function calibrate ({ commit, dispatch }, payload) {
   const samples : Number[][] = payload.samples;
