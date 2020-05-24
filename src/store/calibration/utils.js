@@ -20,10 +20,9 @@ export function generalInfo (samples) {
 
   let replicates = 0, dataPoints = 0;
   for (let row = 0; row < samples.length; row++) {
-    let nonNaNSignals = samples[row].reduce((count, value) => {
-      if (value !== NaN) count++;
-      return count;
-    }) - 1;
+    let nonNaNSignals = samples[row].reduce((acc, cur) => {
+      return acc + (!isNaN(cur) ? 1 : 0);
+    }, 0) - 1;
     replicates = Math.max(replicates, nonNaNSignals);
     dataPoints += nonNaNSignals;
   }
