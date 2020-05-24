@@ -38,6 +38,7 @@
     <q-card-section>
       <form @submit.prevent="submitForm">
       <q-file outlined
+        :label="fileNames[fileTarget]"
         v-model="newFile"
         :disable="!fileTarget"
       >
@@ -65,6 +66,7 @@
       let newFile, fileTarget;
       return { newFile, fileTarget };
     },
+    computed: mapState('ui', ['fileNames']),
     methods: {
 		  ...mapActions('calibration', ['calibrate']),
 		  ...mapActions('prediction', ['clearPredictionValues', 'updatePredictionValues']),
