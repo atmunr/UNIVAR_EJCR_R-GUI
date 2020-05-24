@@ -9,24 +9,19 @@ export async function calibrate ({ commit, dispatch }, payload) {
   const samples : Number[][] = payload.samples;
   const fileName : String = payload.fileName;
 
-  commit('ui/setLoadingRequestStatus', true, { root: true });
+  dispatch('updateLocalValues', samples);
 
-  commit('ui/updateValuesStatus', {
-    name: 'calibration', available: false
-  }, { root: true });
-
-  await dispatch('updateLocalValues', samples);
-  await dispatch('contactAPI');
-
-  commit('ui/updateValuesStatus', {
-    name: 'calibration', available: true
+  await dispatch('ui/processRequest', {
+    name: 'calibration',
+    action: async (afterAction) => {
+      await dispatch('contactAPI');
+      await afterAction();
+    }
   }, { root: true });
 
   commit('ui/updateFileName', {
     target: 'calibration', newFileName: fileName
   }, { root: true });
-
-  commit('ui/setLoadingRequestStatus', false, { root: true });
 
   dispatch('ui/updateShownValues', 'calibration', { root: true });
 }
@@ -63,8 +58,8 @@ export function updateGeneralInfo ({ commit }, samples) {
 
 export async function contactAPI ({ dispatch }) {
   await dispatch('getRegressionResults');
-  dispatch('getLinearityTestResults');
-  dispatch('getNewPlots');
+  await dispatch('getLinearityTestResults');
+  await dispatch('getNewPlots');
 }
 
 export async function getRegressionResults ({ commit }) {

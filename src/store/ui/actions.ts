@@ -39,8 +39,31 @@ export function updateShownValues ({ commit, dispatch }, shownValues) {
   }
 }
 
-export function processRequest ({ commit }, callback) {
-  commit('setLoadingRequestStatus', true, { root: true });
-  callback();
-  commit('setLoadingRequestStatus', true, { root: true });
+export function processRequest ({ commit, dispatch }, payload) {
+  dispatch('startRequest', {
+    name: payload.name,
+    afterRequestStarted: () => {
+      payload.action(() => {
+        dispatch('endRequest', payload.name);
+      });
+    }
+  });
+}
+
+export function startRequest ({ commit }, payload) {
+  commit('ui/setLoadingRequestStatus', true, { root: true });
+
+  commit('ui/updateValuesStatus', {
+    name: payload.name, available: false
+  }, { root: true });
+
+  payload.afterRequestStarted();
+}
+
+export function endRequest ({ commit }, name) {
+  commit('ui/updateValuesStatus', {
+    name: name, available: true
+  }, { root: true });
+
+  commit('ui/setLoadingRequestStatus', false, { root: true });
 }

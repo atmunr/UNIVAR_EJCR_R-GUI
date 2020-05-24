@@ -29,6 +29,7 @@
       },
       selectedPlotAvailable: state => {
         const selectedPlot = state['plots'].current;
+        if (!selectedPlot) return false;
         return state['plots'].urls[selectedPlot] !== '';
       }
     }),
