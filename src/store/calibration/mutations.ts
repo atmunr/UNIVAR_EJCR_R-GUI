@@ -39,6 +39,6 @@ export function updateLinearityTestValues (state, payload) {
 	state.linearityTest.noiseLevel = payload.noiseLevel;
 	state.linearityTest.expectationValue = payload.expectationValue;
 	state.linearityTest.criticalValue= payload.criticalValue;
-	state.linearityTest.ccdf = payload.ccdf;
+	state.linearityTest.pValue = payload.pValue;
 	state.linearityTest.pass = payload.pass;
 }

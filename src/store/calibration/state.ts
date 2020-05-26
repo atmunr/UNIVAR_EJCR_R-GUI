@@ -36,7 +36,7 @@ export default {
     noiseLevel: undefined,
     expectationValue: undefined,
     criticalValue: undefined,
-    ccdf: undefined,
+    pValue: undefined,
     pass: undefined
   },
 

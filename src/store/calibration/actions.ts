@@ -115,7 +115,7 @@ export function getLinearityTestResults ({ commit }) {
       noiseLevel: response.data[0][0],
       expectationValue: response.data[1][0],
       criticalValue: response.data[2][0],
-      ccdf: response.data[3][0],
+      pValue: response.data[3][0],
       pass: response.data[4][0],
     };
     commit('updateLinearityTestValues', newLinearityTestValues);

@@ -8,19 +8,22 @@
       />
     </div>
     <div class="row q-pa-lg">
-      <div class="col q-pa-sm">
-        <q-table
-          title="Linear regression"
-          :data="regressionInfoTable.rows"
-          :columns="regressionInfoTable.columns"
-          hide-bottom
-        />
-      </div>
+      <q-table class="col q-pa-sm"
+        title="Linear regression"
+        :data="regressionInfoTable.rows"
+        :columns="regressionInfoTable.columns"
+        hide-bottom
+      />
       <div class="col q-pa-sm">
         <q-table
           title="Linearity Test"
-          :data="linearityTestInfoTable.rows"
-          :columns="linearityTestInfoTable.columns"
+          :data="linearityTestInfoTable1.rows"
+          :columns="linearityTestInfoTable1.columns"
+          hide-bottom
+        />
+        <q-table class="q-mt-md"
+          :data="linearityTestInfoTable2.rows"
+          :columns="linearityTestInfoTable2.columns"
           hide-bottom
         />
       </div>
@@ -77,18 +80,30 @@
           ]
         }
       },
-      linearityTestInfoTable: state => {
+      linearityTestInfoTable1: state => {
         return {
           columns: [
             { align: 'center', label: 'Estimated noise level', field: 'noiseLevel' },
             { align: 'center', label: 'Expectation value', field: 'expectationValue' },
-            { align: 'center', label: 'Critical value', field: 'criticalValue' },
-            { align: 'center', label: 'Pass?', field: 'pass' }
+            { align: 'center', label: 'Critical value', field: 'criticalValue' }
           ],
           rows: [{
             noiseLevel: state.linearityTest.noiseLevel,
             expectationValue: state.linearityTest.expectationValue,
             criticalValue: state.linearityTest.criticalValue,
+            pValue: state.linearityTest.pValue,
+            pass: state.linearityTest.pass ? "Yes" : "No"
+          }]
+        }
+      },
+      linearityTestInfoTable2: state => {
+        return {
+          columns: [
+            { align: 'center', label: 'p-value', field: 'pValue' },
+            { align: 'center', label: 'Pass?', field: 'pass' }
+          ],
+          rows: [{
+            pValue: state.linearityTest.pValue,
             pass: state.linearityTest.pass ? "Yes" : "No"
           }]
         }
