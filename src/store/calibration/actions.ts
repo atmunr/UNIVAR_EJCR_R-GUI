@@ -140,5 +140,5 @@ export function getNewPlots ({ dispatch }) {
     plotName: 'residuals'
   }, { root: true });
 
-  dispatch('ui/updateCurrentPlot', 'residuals', { root: true });
+  dispatch('ui/updateCurrentPlot', 'regression', { root: true });
 }
