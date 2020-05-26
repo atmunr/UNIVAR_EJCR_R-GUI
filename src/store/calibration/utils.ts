@@ -37,7 +37,7 @@ export function truncateDecimals (x: number, digits: number) {
   let substrLength: number = (decimalIndex == -1 ? s.length : 1 ) + decimalIndex + digits;
 
   let trimmed: string = s.substr(0, substrLength);
-  let res: string = isNaN(trimmed) ? 0 : trimmed;
+  let res: string = isNaN(<number><any>trimmed) ? '0' : trimmed;
 
   return parseFloat(res);
 }
